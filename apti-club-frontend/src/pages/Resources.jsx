@@ -74,13 +74,13 @@ const guides = {
       { label: 'Review Mistakes', desc: 'Every wrong answer is a free lesson — read the solution carefully.', icon: 'spark' },
       { label: 'Full Mock Tests', desc: 'Simulate company assessments with realistic conditions.', icon: 'rocket' },
     ],
-    tip: 'Solve 10–15 questions every day. Track your accuracy percentage, not just question count.',
+    tip: 'Take the Bizotic weekly assesments without fail, it actually helps. Solve 10–15 questions every day. Track your accuracy percentage, not just question count.',
     links: [
       { name: 'IndiaBix', url: 'https://www.indiabix.com', desc: 'The go-to for aptitude MCQs with detailed solutions. Covers every topic from basic to advanced with company-specific question sets.', tag: 'Practice' },
       { name: 'PrepInsta', url: 'https://prepinsta.com', desc: 'Company-specific aptitude papers, dashboards and timed mock tests. Especially useful once you know which companies you are targeting.', tag: 'Company Prep' },
-      { name: 'Testbook', url: 'https://testbook.com', desc: 'Full-length adaptive mock tests with analytics. Good for identifying weak areas and tracking improvement over time.', tag: 'Mock Tests' },
-      { name: 'Brilliant.org', url: 'https://brilliant.org', desc: 'Visual, interactive problem-solving for quantitative reasoning. Builds intuition rather than just formula recall — great for AMCAT and CoCubes style tests.', tag: 'Concept Building' },
-      { name: 'Mercer | Mettl Blog', url: 'https://mettl.com/blog', desc: 'Explains how gamified and psychometric assessments work, with sample questions. Helpful for understanding scoring logic before the actual test.', tag: 'Gamified Prep' },
+      { name: 'MockPrep', url: 'https://www.mockprep.co.in/gate-mock-tests/general-aptitude', desc: 'Full-length adaptive mock tests with analytics. Good for identifying weak areas and tracking improvement over time.', tag: 'Mock Tests' },
+      { name: 'SelfStudy', url: 'https://www.selfstudys.com/mcq/gate/online/mock-test/general-aptitude', desc: 'Provide multiple timed 20-minute sectional mock tests.', tag: 'Mock Tests' },
+      { name: 'TCYonline', url: 'https://www.tcyonline.com/tests/aptitude-test-for-gate', desc: 'Topic-wise and mixed numerical aptitude practice series with customizable time limits and difficulty levels.', tag: 'Mock Tests'},
       { name: 'MindTree Aptitude Papers', url: 'https://www.m4maths.com', desc: 'Real placement papers from top companies with difficulty ratings. Filter by company name and practice the exact question types they use.', tag: 'Placement Papers' },
     ],
   },
@@ -493,9 +493,10 @@ export default function Resources() {
 
   if (!category) {
     return (
-      <div className="page-shell">
+      <div className="page-shell resource-library-page">
         <div className="page-hero">
-          <p className="eyebrow">THE RESOURCE LIBRARY / 01</p>
+          <span className="eyebrow">THE RESOURCE LIBRARY / 01</span>
+          <h1>Resources</h1>
         </div>
         <div className="resource-grid resource-library-grid">
           {categories.map((c, i) => (

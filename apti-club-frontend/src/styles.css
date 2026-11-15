@@ -180,16 +180,31 @@
 
 .resource-library-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 13px;
-  margin: 35px 0 70px;
+  margin: 20px 0 0;
   width: 100%;
+}
+
+@media(max-width:1199px) {
+  .resource-library-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media(max-width:1050px) {
   .resource-library-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.resource-library-page {
+  padding-top: 30px;
+  padding-bottom: 32px;
+}
+
+.resource-library-page .page-hero {
+  padding: 8px 0 18px;
 }
 
 @media(max-width:420px) {
