@@ -1,0 +1,5 @@
+import React from 'react'
+import {CalendarDays,ArrowUpRight} from 'lucide-react'
+import {useApp} from '../context'
+import {formatDate} from '../utils'
+export default function Archive(){const {events}=useApp();const past=events.filter(e=>e.status==='past'||new Date(e.date+'T23:59:00')<new Date()).sort((a,b)=>b.date.localeCompare(a.date));return <div className="page-shell"><div className="page-hero"><span className="eyebrow">THE GOOD OLD DAYS / 03</span><h1>Look what<br/><em>we made happen.</em></h1><p>A little rewind of the sessions, ideas and community moments that brought us here.</p></div><div className="archive-grid">{past.map((e,i)=><article className="archive-card" key={e.id}><div className="archive-image"><img src={e.poster} alt={e.title}/><span>RECAP / {String(i+1).padStart(2,'0')}</span></div><div className="archive-info"><span className="eyebrow"><CalendarDays size={13}/>{formatDate(e.date)}</span><h3>{e.title}</h3><p>{e.description}</p></div></article>)}{past.length===0&&<div className="empty-state">Our first memories are waiting to be made.</div>}</div></div>}

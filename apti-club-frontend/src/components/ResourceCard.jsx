@@ -1,0 +1,6 @@
+import React from 'react'
+import {motion} from 'framer-motion'
+import {ArrowUpRight,Brain,MessagesSquare,Code2,Cpu,FileText} from 'lucide-react'
+const icons={'Aptitude':Brain,'Interview':MessagesSquare,'Interview Preparation':MessagesSquare,'DSA':Code2,'Data Structures & Algorithms':Code2,'CS Fundamentals':Cpu,'Resume Building':FileText}
+const colors={'Aptitude':'orange','Interview':'lilac','Interview Preparation':'lilac','DSA':'acid','Data Structures & Algorithms':'acid','CS Fundamentals':'coral','Resume Building':'lilac'}
+export default function ResourceCard({category,title,desc,index,onClick}){const Icon=icons[category]||Brain;return <motion.div initial={{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.07}} whileHover={{y:-7}} className={'resource-card '+colors[category]}><div className="card-top"><span className="card-icon"><Icon size={25}/></span><span className="card-arrow"><ArrowUpRight size={19}/></span></div><span className="eyebrow">{String(index+1).padStart(2,'0')} / RESOURCE TRACK</span><h3>{title}</h3><p>{desc}</p><span className="card-cta">Explore track <ArrowUpRight size={15}/></span><span className="card-orb"/></motion.div>}

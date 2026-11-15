@@ -1,0 +1,1 @@
+export const formatDate=d=>new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})
