@@ -222,3 +222,59 @@ export const updateEventStatus = async (req, res) => {
     });
   }
 };
+
+export const deleteEvent = async (req, res) => {
+  let connection;
+
+  try {
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+
+    const [events] = await connection.execute(
+      'SELECT id FROM events WHERE id=? FOR UPDATE',
+      [req.params.id]
+    );
+
+    if (!events.length) {
+      await connection.rollback();
+      return res.status(404).json({
+        success: false,
+        message: 'Event not found'
+      });
+    }
+
+    await connection.execute(
+      `DELETE a FROM attendance a
+       INNER JOIN registrations r ON r.id = a.registration_id
+       WHERE r.event_id = ?`,
+      [req.params.id]
+    );
+    await connection.execute(
+      'DELETE FROM registrations WHERE event_id=?',
+      [req.params.id]
+    );
+    await connection.execute(
+      'DELETE FROM events WHERE id=?',
+      [req.params.id]
+    );
+
+    await connection.commit();
+    return res.json({
+      success: true,
+      message: 'Event and its registrations were deleted successfully'
+    });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Could not delete the event'
+    });
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};

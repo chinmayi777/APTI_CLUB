@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { ArrowLeft, CalendarCheck, UserPlus, Users } from 'lucide-react'
+import { ArrowLeft, CalendarCheck, Trash2, UserPlus, Users } from 'lucide-react'
 import { useApp } from '../context'
 import { apiRequest } from '../api'
 
@@ -19,6 +19,7 @@ export default function CoordinatorManagement() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [deletingId, setDeletingId] = useState(null)
 
   const loadCoordinators = useCallback(async () => {
     setLoading(true)
@@ -78,6 +79,30 @@ export default function CoordinatorManagement() {
       setError(createError.message || 'Could not create coordinator account.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const deleteCoordinator = async coordinator => {
+    const confirmed = window.confirm(
+      `Delete ${coordinator.full_name}'s coordinator access? Sign-in will be disabled, while their event history is retained.`
+    )
+    if (!confirmed) return
+
+    setError('')
+    setMessage('')
+    setDeletingId(coordinator.id)
+
+    try {
+      const result = await apiRequest(`/admin/coordinators/${coordinator.id}`, {
+        method: 'DELETE',
+        token
+      })
+      setMessage(result.message || 'Coordinator access deleted.')
+      await loadCoordinators()
+    } catch (deleteError) {
+      setError(deleteError.message || 'Could not delete the coordinator.')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -181,22 +206,39 @@ export default function CoordinatorManagement() {
             <div className="empty-state">No coordinator accounts yet.</div>
           )}
 
-          {coordinators.map(coordinator => (
-            <article className="coordinator-row" key={coordinator.id}>
-              <div className="coordinator-identity">
-                <strong>{coordinator.full_name}</strong>
-                <span>{coordinator.email}</span>
-                {coordinator.usn && <span>{coordinator.usn}</span>}
-              </div>
-              <span className={`coordinator-status ${coordinator.is_active ? 'active' : ''}`}>
-                {coordinator.is_active ? 'Active' : 'Inactive'}
-              </span>
-              <div className="coordinator-activity">
-                <span><CalendarCheck size={14} /> {coordinator.events_created} created</span>
-                <span>{coordinator.events_published} published</span>
-              </div>
-            </article>
-          ))}
+          {coordinators.map(coordinator => {
+            const isActive = Boolean(Number(coordinator.is_active))
+
+            return (
+              <article className="coordinator-row" key={coordinator.id}>
+                <div className="coordinator-identity">
+                  <strong>{coordinator.full_name}</strong>
+                  <span>{coordinator.email}</span>
+                  {coordinator.usn && <span>{coordinator.usn}</span>}
+                </div>
+                <div className="coordinator-row-actions">
+                  <span className={`coordinator-status ${isActive ? 'active' : ''}`}>
+                    {isActive ? 'Active' : 'Inactive'}
+                  </span>
+                  {isActive && (
+                    <button
+                      className="btn btn-ghost coordinator-delete-button"
+                      type="button"
+                      disabled={deletingId === coordinator.id}
+                      onClick={() => deleteCoordinator(coordinator)}
+                    >
+                      <Trash2 size={14} />
+                      {deletingId === coordinator.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  )}
+                </div>
+                <div className="coordinator-activity">
+                  <span><CalendarCheck size={14} /> {coordinator.events_created} created</span>
+                  <span>{coordinator.events_published} published</span>
+                </div>
+              </article>
+            )
+          })}
         </section>
       </div>
     </div>

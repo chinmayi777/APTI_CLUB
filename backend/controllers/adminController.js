@@ -92,3 +92,32 @@ export const createCoordinator = async (req, res) => {
     });
   }
 };
+
+export const deleteCoordinator = async (req, res) => {
+  try {
+    const [result] = await db.execute(
+      `UPDATE users
+       SET is_active = 0
+       WHERE id = ? AND role = 'coordinator' AND is_active = 1`,
+      [req.params.id]
+    );
+
+    if (!result.affectedRows) {
+      return res.status(404).json({
+        success: false,
+        message: 'Active coordinator not found'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Coordinator access deleted; event history was retained'
+    });
+  } catch (error) {
+    console.error('Coordinator deletion error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Could not delete the coordinator'
+    });
+  }
+};

@@ -3,7 +3,8 @@ import express from 'express';
 
 import {
   createCoordinator,
-  getCoordinators
+  getCoordinators,
+  deleteCoordinator
 } from '../controllers/adminController.js';
 
 import {
@@ -25,6 +26,13 @@ router.post(
   authenticateToken,
   authorizeRoles('admin'),
   createCoordinator
+);
+
+router.delete(
+  '/coordinators/:id',
+  authenticateToken,
+  authorizeRoles('admin'),
+  deleteCoordinator
 );
 
 export default router;

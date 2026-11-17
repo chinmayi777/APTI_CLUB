@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { ArrowUpRight, CalendarDays, Plus, Users } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, Plus, Trash2, Users } from 'lucide-react'
 import { useApp } from '../context'
 import { apiRequest } from '../api'
 
@@ -32,6 +32,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [publishingId, setPublishingId] = useState(null)
+  const [deletingId, setDeletingId] = useState(null)
 
   const loadEvents = useCallback(async () => {
     setLoading(true)
@@ -112,6 +113,30 @@ export default function Admin() {
       setError(publishError.message || 'Could not publish the event.')
     } finally {
       setPublishingId(null)
+    }
+  }
+
+  const deleteEvent = async event => {
+    const confirmed = window.confirm(
+      `Delete "${event.title}"? Its registrations and attendance records will also be deleted.`
+    )
+    if (!confirmed) return
+
+    setError('')
+    setMessage('')
+    setDeletingId(event.id)
+
+    try {
+      const result = await apiRequest(`/events/${event.id}`, {
+        method: 'DELETE',
+        token
+      })
+      setMessage(result.message || 'Event deleted successfully.')
+      await loadEvents()
+    } catch (deleteError) {
+      setError(deleteError.message || 'Could not delete the event.')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -282,20 +307,32 @@ export default function Admin() {
                 </span>
               </div>
 
-              {event.status === 'draft' && user.role === 'admin' && (
-                <button
-                  className="btn btn-acid"
-                  type="button"
-                  disabled={publishingId === event.id}
-                  onClick={() => publishEvent(event)}
-                >
-                  {publishingId === event.id ? 'Publishing...' : 'Publish'}
-                </button>
-              )}
+              <div className="admin-event-actions">
+                {event.status === 'draft' && user.role === 'admin' && (
+                  <button
+                    className="btn btn-acid"
+                    type="button"
+                    disabled={publishingId === event.id}
+                    onClick={() => publishEvent(event)}
+                  >
+                    {publishingId === event.id ? 'Publishing...' : 'Publish'}
+                  </button>
+                )}
 
-              {event.status === 'draft' && user.role === 'coordinator' && (
-                <span className="role-pill">Awaiting admin</span>
-              )}
+                {event.status === 'draft' && user.role === 'coordinator' && (
+                  <span className="role-pill">Awaiting admin</span>
+                )}
+
+                <button
+                  className="btn btn-ghost admin-delete-event"
+                  type="button"
+                  disabled={deletingId === event.id}
+                  onClick={() => deleteEvent(event)}
+                >
+                  <Trash2 size={14} />
+                  {deletingId === event.id ? 'Deleting...' : 'Delete event'}
+                </button>
+              </div>
             </div>
           ))}
         </section>

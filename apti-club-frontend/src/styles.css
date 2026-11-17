@@ -2070,6 +2070,36 @@
   color: var(--coral);
 }
 
+.coordinator-row-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.coordinator-delete-button,
+.admin-delete-event {
+  min-height: 34px;
+  padding: 8px 10px;
+  border-color: rgba(255, 104, 74, .35);
+  color: var(--coral);
+  font-size: 10px;
+}
+
+.coordinator-delete-button:hover,
+.admin-delete-event:hover {
+  border-color: var(--coral);
+  background: rgba(255, 104, 74, .1);
+}
+
+.admin-event-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 8px;
+}
+
 @media (max-width: 900px) {
   .coordinator-management-grid {
     grid-template-columns: 1fr;

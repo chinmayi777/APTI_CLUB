@@ -6,7 +6,8 @@ import {
   getManageEvents,
   createEvent,
   updateEvent,
-  updateEventStatus
+  updateEventStatus,
+  deleteEvent
 } from '../controllers/eventController.js';
 
 import {
@@ -49,6 +50,13 @@ router.patch(
   authenticateToken,
   authorizeRoles('admin'),
   updateEventStatus
+);
+
+router.delete(
+  '/:id',
+  authenticateToken,
+  authorizeRoles('admin', 'coordinator'),
+  deleteEvent
 );
 
 export default router;
