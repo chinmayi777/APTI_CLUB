@@ -12,7 +12,7 @@ export function Header() {
     ['Home', '/'],
     ['Resources', '/resources'],
     ['Events', '/events'],
-    ['Event Archive', '/archive'],
+    ['Archive', '/archive'],
     ['About', '/about'],
   ]
 
@@ -47,7 +47,7 @@ export function Header() {
 
           {user ? (
             <div className="profile-wrap">
-              <Link className="profile-link" to="/dashboard">
+              <Link className="profile-link" to="/">
                 <UserRound size={16} />
                 <span>{user.name.split(' ')[0]}</span>
               </Link>

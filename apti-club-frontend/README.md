@@ -1,6 +1,6 @@
 # Apti Club — Frontend
 
-A responsive React/Vite frontend prototype for a Gen-Z placement preparation platform. It includes an academic-themed 3D hero with floating books, larger typography, dark/light mode, resource library, event registration, archive, USN-based demo signup/login, role-based demo dashboards, event creation, attendance marking and an improved website-aware Apti Bot.
+A responsive React/Vite frontend prototype for a Gen-Z placement preparation platform. It includes an academic-themed 3D hero with floating books, larger typography, dark/light mode, resource library, event registration, archive, USN-based demo signup/login, role-based admin and coordinator pages, event creation, attendance marking and an improved website-aware Apti Bot. Students see their greeting and event registrations on the home page.
 
 ## Requirements
 - Node.js 18.18+ (Node 20 LTS recommended)
@@ -23,7 +23,7 @@ The production bundle is generated in `dist/`. Serve this directory using Nginx 
 ## Demo walkthrough
 1. Open Login → Create account. Use a sample USN such as `4XX23CS001` and a password of at least 6 characters.
 2. Browse Resources and Events. Register for an event while signed in as a student.
-3. Open the profile/dashboard to see registrations and attendance status.
+3. Return to the home page to see your greeting and registered events.
 4. Sign out, then choose the **Admin** demo role on Login to open `/admin` and create/delete events.
 5. Choose **Event Coordinator** on Login to open `/coordinator` and mark registered students Present or Absent.
 6. Toggle the sun/moon icon to switch theme. Try Apti Bot with questions such as “What is today’s date and time?”, “Which events am I registered for?”, “Show my attendance”, “What upcoming events are available?”, “Show DBMS resources” or “What did I ask earlier?”.
@@ -42,7 +42,7 @@ This is the **frontend-first functioning prototype**. Data is persisted in brows
 src/
   components/   Header, footer, chatbot, 3D scene, resource card
   pages/        Home, Resources, Events, Archive, About, Auth,
-                Dashboard, Admin, Coordinator
+                Admin, Coordinator
   context.jsx   Prototype app state + localStorage persistence
   data.js       Curated resource links and demo events
   utils.js      Date formatting
