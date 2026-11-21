@@ -1,397 +1,727 @@
-import React, { useState } from 'react'
-import { Download, FileText, ChevronRight, BookOpen, Briefcase, Filter } from 'lucide-react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ArrowUpDown, BookOpen, Briefcase, ChevronRight, Download, ExternalLink,
+  FileText, Filter, Pencil, Plus, Settings, Trash2, X
+} from 'lucide-react'
+import { useApp } from '../context'
+import { apiRequest, getApiAssetUrl } from '../api'
 
-/* ─── PDF BASE PATH ─────────────────────────────────────────────
-   Place all PDFs inside your project's /public/reports/ folder.
-   e.g. public/reports/Thoughtworks.pdf
-   They will be served at /reports/Thoughtworks.pdf at runtime.
-   For the handbook: public/handbooks/Career_Catalyst_2026.pdf
-─────────────────────────────────────────────────────────────── */
-const REPORT_BASE = '/reports/'
-const HANDBOOK_BASE = '/handbooks/'
-
-function reportUrl(filename) {
-  return `${REPORT_BASE}${filename}`
-}
-
-function handbookUrl(filename) {
-  return `${HANDBOOK_BASE}${filename}`
-}
-
-/* ─── HANDBOOKS DATA ────────────────────────────────────────── */
-const handbooks = [
-  {
-    id: 'cc2',
-    title: 'Career Catalyst Vol. 2',
-    subtitle: 'Placement Prep Handbook 2026',
-    desc: 'A complete roadmap covering aptitude, technical mastery, resume crafting, interview behaviour, and virtual hiring readiness. Created by the 2026 batch.',
-    year: '2026',
-    pages: 23,
-    file: 'Career_Catalyst_2026_pdf_20251222_131431_0000.pdf',
-    available: true,
-    color: '#6C5DD3',
-  },
-  {
-    id: 'cc1',
-    title: 'Career Catalyst Vol. 1',
-    subtitle: 'Placement Prep Handbook 2025',
-    desc: 'The first edition of the Career Catalyst handbook — foundational placement guidance from the 2025 batch seniors.',
-    year: '2025',
-    pages: null,
-    file: null,
-    available: false,
-    color: '#4f8ef7',
-  },
-  {
-    id: 'report25',
-    title: '2025 Batch Placement Report',
-    subtitle: 'Annual Placement Statistics',
-    desc: 'Comprehensive placement statistics, company-wise data, branch breakdowns and insights from the 2025 graduating batch.',
-    year: '2025',
-    pages: null,
-    file: null,
-    available: false,
-    color: '#3ecf8e',
-  },
-]
-
-/* ─── COMPANIES DATA ────────────────────────────────────────── */
-const companies = [
-  {
-    id: 'ltts',
-    name: 'L&T Technology Services',
+const companyDetails = {
+  'L&T Technology Services': {
     short: 'LTTS',
     role: 'Associate Engineer (Trainee)',
     domain: 'Engineering & R&D Services',
     rounds: ['Online Test', 'Technical Interview', 'HR Interview'],
     tags: ['ECE', 'CSE'],
-    ctc: null,
     highlight: 'Focus on core subject basics (OS, CN, DBMS), projects on resume, and arrays/strings coding questions.',
-    accent: '#4f8ef7',
-    reports: [
-      { name: 'Manisha Angadi (ECE)', file: 'L_T_report_-_2025_batch.pdf' },
-      { name: 'Vaishnavi Bhat (CSE)', file: 'L_T_Report_VaishnaviBhat.pdf' },
-      { name: 'Shravanthi G U (ECE)', file: 'L_T.pdf' },
-      { name: 'Sahana S. Hiremath (ECE)', file: 'LTTS_Report.pdf' },
-      { name: 'Sinchana Aradhya B J (ECE)', file: 'LTTS.pdf' },
-      { name: 'Samatha S (ECE)', file: 'LTTS-1.pdf' },
-    ],
+    accent: '#4f8ef7'
   },
-  {
-    id: 'applied',
-    name: 'Applied Materials',
+  'Applied Materials': {
     short: 'AMAT',
     role: 'IT Solutions Management',
     domain: 'Semiconductor Equipment',
     rounds: ['Online MCQ Test', 'Pre-Placement Talk', 'Technical Interview', 'HR Interview'],
     tags: ['CSE'],
-    ctc: null,
     highlight: 'Focus on DBMS, DSA, OOPs, OS and CN. Technical round is more communication-focused than deep coding.',
-    accent: '#3ecf8e',
-    reports: [
-      { name: 'Monisha B G (CSE)', file: 'Applied_Materials_Interview_Report_MonishaBG.pdf' },
-    ],
+    accent: '#3ecf8e'
   },
-  {
-    id: 'dover',
-    name: 'Dover India Pvt Ltd',
+  'Dover India Pvt Ltd': {
     short: 'DOVER',
     role: 'Software Engineer',
     domain: 'Industrial Manufacturing',
     rounds: ['Online Test', 'Technical Interview', 'Managerial + HR Interview'],
     tags: ['ISE'],
-    ctc: null,
     highlight: 'OOPs, DBMS, code output questions, and project explanation with live execution. Communication is key.',
-    accent: '#f59e0b',
-    reports: [
-      { name: 'Sanjana C R (ISE)', file: 'dover_report.pdf' },
-    ],
+    accent: '#f59e0b'
   },
-  {
-    id: 'mindsprint',
-    name: 'MindSprint',
+  MindSprint: {
     short: 'MS',
     role: 'Junior Engineer',
     domain: 'IT Services',
     rounds: ['Online Assessment', 'Technical Interview', 'HR Interview'],
     tags: ['ISE'],
-    ctc: '5.2 LPA',
     highlight: 'SDLC, DevOps, CN, Microservices and Java are asked. HirePro platform. Eligibility: 7.5 CGPA, no arrears.',
-    accent: '#a78bfa',
-    reports: [
-      { name: 'Poornima M (ISE)', file: 'MindSprint_Report_Poornima_.pdf' },
-    ],
+    accent: '#a78bfa'
   },
-  {
-    id: 'hsbc',
-    name: 'HSBC Technology India',
+  'HSBC Technology India': {
     short: 'HSBC',
     role: 'Trainee Software Engineer',
     domain: 'Banking & Financial Services',
     rounds: ['Simulate Assessment', 'Codility Assessment', 'Technical Interview', 'HR Interview'],
     tags: ['CSE', 'ISE'],
-    ctc: '15 LPA',
     highlight: 'Codility has 3 coding questions (mapping, frequency, patterns). Tech round includes live coding in chosen language. Eligibility: 7 CGPA, no backlogs.',
-    accent: '#22c55e',
-    reports: [
-      { name: 'Aashitha (CSE)', file: 'Aashitha_HSBC_Report.pdf' },
-      { name: 'Poornima M (ISE)', file: 'Poornima_M_HSBC_Technology_India_.pdf' },
-    ],
+    accent: '#22c55e'
   },
-  {
-    id: 'tw',
-    name: 'Thoughtworks',
+  Thoughtworks: {
     short: 'TW',
     role: 'Software Engineer',
     domain: 'Technology Consulting',
     rounds: ['Online Coding Assessment', 'Code Pairing Round', 'Technical Interview', 'Social Cultural Connectivity'],
     tags: ['ISE'],
-    ctc: null,
     highlight: 'Unique code pairing round using GitHub project. Deep OOPs, DBMS, SQL queries and OS knowledge needed. 75-min coding test with 4 questions.',
-    accent: '#f97316',
-    reports: [
-      { name: 'Indushree K N (ISE)', file: 'Thoughtworks.pdf' },
-    ],
-  },
-]
-
-/* ─── TAG BADGE ─────────────────────────────────────────────── */
-function Tag({ label, color }) {
-  return (
-    <span
-      className="archive-tag"
-      style={{ '--tag-color': color || '#6C5DD3' }}
-    >
-      {label}
-    </span>
-  )
+    accent: '#f97316'
+  }
 }
 
-/* ─── HANDBOOK CARD ──────────────────────────────────────────── */
-function HandbookCard({ book }) {
+const initialForm = {
+  type: 'report',
+  title: '',
+  student_name: '',
+  company: '',
+  year: '',
+  package: '',
+  description: '',
+  file: null
+}
+
+function PdfViewer({ item, onClose }) {
+  useEffect(() => {
+    const closeOnEscape = event => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [onClose])
+
   return (
-    <div className={`handbook-card ${!book.available ? 'handbook-card--locked' : ''}`}
-      style={{ '--hb-color': book.color }}
-    >
-      <div className="hb-glow" />
-      <div className="hb-top">
-        <div className="hb-icon">
-          <BookOpen size={22} />
+    <div className="pdf-viewer-overlay" role="presentation" onClick={onClose}>
+      <section
+        className="pdf-viewer-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.title}
+        onClick={event => event.stopPropagation()}
+      >
+        <header className="pdf-viewer-header">
+          <div className="pdf-viewer-title">
+            <FileText size={17} />
+            <span>{item.title}</span>
+          </div>
+          <div className="pdf-viewer-actions">
+            <a className="pdf-viewer-btn" href={item.file_url} target="_blank" rel="noreferrer" aria-label="Open PDF in new tab">
+              <ExternalLink size={17} />
+            </a>
+            <button className="pdf-viewer-btn pdf-viewer-close" type="button" onClick={onClose} aria-label="Close PDF">
+              <X size={19} />
+            </button>
+          </div>
+        </header>
+        <div className="pdf-viewer-body">
+          <iframe className="pdf-iframe" src={item.file_url} title={item.title} />
         </div>
-        <span className="hb-year">{book.year}</span>
-      </div>
-      <h3 className="hb-title">{book.title}</h3>
-      <p className="hb-subtitle">{book.subtitle}</p>
-      <p className="hb-desc">{book.desc}</p>
-      {book.pages && <p className="hb-pages">{book.pages} pages</p>}
-      {book.available ? (
-        <a
-          href={handbookUrl(book.file)}
-          download={book.file}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hb-btn hb-btn--available"
-          style={{ '--hb-color': book.color }}
-        >
-          <Download size={15} />
-          Download PDF
-        </a>
-      ) : (
-        <div className="hb-btn hb-btn--locked">
-          <FileText size={15} />
-          Coming Soon
-        </div>
-      )}
+      </section>
     </div>
   )
 }
 
-/* ─── COMPANY CARD ───────────────────────────────────────────── */
-function CompanyCard({ company }) {
+function HandbookCard({ book, isAdmin, onEdit, onDelete, onOpen }) {
+  return (
+    <article className={`handbook-card ${!book.file_url ? 'handbook-card--locked' : ''}`} style={{ '--hb-color': '#6C5DD3' }}>
+      <div className="hb-glow" />
+      <div className="hb-top">
+        <div className="hb-icon"><BookOpen size={22} /></div>
+        <span className="hb-year">{book.year}</span>
+      </div>
+      <h3 className="hb-title">{book.title}</h3>
+      <p className="hb-subtitle">{book.type === 'report' ? 'Placement report' : 'Placement handbook'}</p>
+      {book.description && <p className="hb-desc">{book.description}</p>}
+      {book.file_url ? (
+        <button className="hb-btn hb-btn--available" type="button" onClick={() => onOpen(book)}>
+          <Download size={15} /> View / Download PDF
+        </button>
+      ) : (
+        <div className="hb-btn hb-btn--locked"><FileText size={15} /> PDF not uploaded</div>
+      )}
+      {isAdmin && (
+        <button className="archive-edit-button" type="button" onClick={() => onEdit(book)}>
+          <Pencil size={14} /> Edit
+        </button>
+      )}
+      {isAdmin && (
+        <button
+          className="archive-delete-button"
+          type="button"
+          onClick={() => onDelete(book)}
+          aria-label={`Delete ${book.title}`}
+        >
+          <Trash2 size={14} /> Delete
+        </button>
+              )}
+    </article>
+  )
+}
+
+function CompanyCard({ company, isAdmin, onEdit, onDelete, onOpen }) {
   const [open, setOpen] = useState(false)
+  const details = companyDetails[company.name] || {
+    short: company.name.slice(0, 5).toUpperCase(),
+    role: 'Interview experience',
+    domain: 'Company interview',
+    rounds: [],
+    tags: [],
+    highlight: '',
+    accent: '#6C5DD3'
+  }
 
   return (
-    <div
-      className="company-card"
-      style={{ '--co-accent': company.accent }}
-    >
-      {/* Header */}
+    <article className="company-card" style={{ '--co-accent': details.accent }}>
       <div
         className="cc-header"
         role="button"
         tabIndex={0}
         aria-expanded={open}
-        aria-label={`${open ? 'Hide' : 'View'} ${company.name} interview details`}
-        onClick={() => setOpen(o => !o)}
+        aria-label={`${open ? 'Hide' : 'View'} ${company.name} interview reports`}
+        onClick={() => setOpen(value => !value)}
         onKeyDown={event => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault()
-            setOpen(o => !o)
+            setOpen(value => !value)
           }
         }}
       >
-        <div className="cc-logo" style={{ borderColor: company.accent }}>
-          <span>{company.short}</span>
-        </div>
+        <div className="cc-logo" style={{ borderColor: details.accent }}><span>{details.short}</span></div>
         <div className="cc-info">
-          <div className="cc-name-row">
-            <h3 className="cc-name">{company.name}</h3>
-            {company.ctc && (
-              <span className="cc-ctc">
-                {company.ctc}
-              </span>
-            )}
-          </div>
-          <p className="cc-role">{company.role}</p>
-          <p className="cc-domain">{company.domain}</p>
+          <div className="cc-name-row"><h3 className="cc-name">{company.name}</h3></div>
+          <p className="cc-role">{details.role}</p>
+          <p className="cc-domain">{details.domain}</p>
         </div>
-        <ChevronRight
-          size={18}
-          className={`cc-chevron ${open ? 'cc-chevron--open' : ''}`}
-        />
+        <ChevronRight size={18} className={`cc-chevron ${open ? 'cc-chevron--open' : ''}`} />
       </div>
 
-      {/* Tags */}
       <div className="cc-tags">
-        {company.tags.map(t => (
-          <span key={t} className="cc-branch" style={{ borderColor: company.accent }}>
-            {t}
-          </span>
+        {details.tags.map(tag => (
+          <span key={tag} className="cc-branch" style={{ borderColor: details.accent }}>{tag}</span>
         ))}
-        <span className="cc-rounds-count">{company.rounds.length} rounds</span>
+        <span className="cc-rounds-count">{company.reports.length} reports</span>
       </div>
 
-      {/* Expandable section */}
       {open && (
-        <div
-          className="cc-expanded"
-          id={`company-details-${company.id}`}
-        >
-          {/* Rounds */}
-          <div className="cc-section">
-            <span className="cc-section-label">Hiring Rounds</span>
-            <div className="cc-rounds">
-              {company.rounds.map((r, i) => (
-                <div key={i} className="cc-round">
-                  <span className="cc-round-num">{i + 1}</span>
-                  <span>{r}</span>
-                </div>
-              ))}
+        <div className="cc-expanded">
+          {details.rounds.length > 0 && (
+            <div className="cc-section">
+              <span className="cc-section-label">Hiring Rounds</span>
+              <div className="cc-rounds">
+                {details.rounds.map((round, index) => (
+                  <div key={round} className="cc-round">
+                    <span className="cc-round-num">{index + 1}</span><span>{round}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Tip */}
+          )}
+          {details.highlight && (
+            <div className="cc-section">
+              <span className="cc-section-label">What to focus on</span>
+              <p className="cc-highlight">{details.highlight}</p>
+            </div>
+          )}
           <div className="cc-section">
-            <span className="cc-section-label">What to focus on</span>
-            <p className="cc-highlight">{company.highlight}</p>
-          </div>
-
-          {/* Reports */}
-          <div className="cc-section">
-            <span className="cc-section-label">Interview Reports from students</span>
+            <span className="cc-section-label">Interview Reports from Students</span>
             <div className="cc-reports">
-              {company.reports.map((r, i) => (
-                <a
-                  key={i}
-                  href={reportUrl(r.file)}
-                  download={r.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cc-report-link"
-                  style={{ '--co-accent': company.accent }}
-                >
-                  <FileText size={13} />
-                  <span>{r.name}</span>
-                  <Download size={12} className="cc-ext" />
-                </a>
+              {company.reports.map(report => (
+                <div className="archive-report-row" key={report.id}>
+                  <button
+                    className="cc-report-link"
+                    type="button"
+                    disabled={!report.file_url}
+                    onClick={() => onOpen(report)}
+                    style={{ '--co-accent': details.accent }}
+                  >
+                    <FileText size={13} />
+                    <span>{report.student_name} · {report.year}{report.package ? ` · ${report.package}` : ''}</span>
+                    <Download size={12} className="cc-ext" />
+                  </button>
+                  {isAdmin && (
+                    <button
+                      className="archive-edit-button"
+                      type="button"
+                      onClick={() => onEdit(report)}
+                      aria-label={`Edit ${report.student_name}'s report`}
+                    >
+                      <Pencil size={14} />
+                    </button>
+                  )}
+                  {isAdmin && (
+                    <button
+                      className="archive-delete-button"
+                      type="button"
+                      onClick={() => onDelete(report)}
+                      aria-label={`Delete ${report.student_name}'s report`}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </div>
       )}
+    </article>
+  )
+}
+
+/* ─── ADMIN PANEL (form only – right list removed) ───────────── */
+function AdminPanel({
+  saving, error, message, onClose, onSubmit, onCancelEdit,
+  form, setForm, editingItem
+}) {
+  const isReport = form.type === 'report'
+
+  const change = event => {
+    const { name, value, files } = event.target
+    setForm(current => ({
+      ...current,
+      [name]: name === 'file' ? files[0] || null : value
+    }))
+  }
+
+  return (
+    <div className="archive-admin-overlay" role="presentation" onClick={onClose}>
+      <section
+        className="archive-admin-dialog archive-admin-dialog--form-only"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="archive-admin-title"
+        onClick={event => event.stopPropagation()}
+      >
+        <header className="archive-admin-header">
+          <div>
+            <span className="archive-eyebrow">ADMIN / ARCHIVE MANAGER</span>
+            <h2 id="archive-admin-title">Add or edit archive items</h2>
+          </div>
+          <button type="button" className="pdf-viewer-btn" onClick={onClose} aria-label="Close archive manager">
+            <X size={20} />
+          </button>
+        </header>
+
+        <div className="archive-admin-content">
+          <form className="admin-form archive-admin-form" onSubmit={onSubmit}>
+            <label>
+              Item type
+              <select name="type" value={form.type} onChange={change} disabled={Boolean(editingItem)}>
+                <option value="report">Student interview report</option>
+                <option value="handbook">Handbook / batch report</option>
+              </select>
+            </label>
+
+            {isReport ? (
+              <>
+                <label>
+                  Student name
+                  <input name="student_name" required value={form.student_name} onChange={change} />
+                </label>
+                <label>
+                  Company
+                  <input name="company" required value={form.company} onChange={change} />
+                </label>
+                <div className="form-two">
+                  <label>
+                    Year
+                    <input type="number" name="year" min="1900" max="2100" required value={form.year} onChange={change} />
+                  </label>
+                  <label>
+                    Package / CTC
+                    <input name="package" value={form.package} onChange={change} placeholder="e.g. 8 LPA" />
+                  </label>
+                </div>
+              </>
+            ) : (
+              <>
+                <label>
+                  Handbook title
+                  <input name="title" required value={form.title} onChange={change} />
+                </label>
+                <label>
+                  Year
+                  <input type="number" name="year" min="1900" max="2100" required value={form.year} onChange={change} />
+                </label>
+                <label>
+                  Description
+                  <textarea name="description" value={form.description} onChange={change} rows="3" />
+                </label>
+              </>
+            )}
+
+            <label>
+              PDF file {editingItem && <small>Leave blank to keep the current file</small>}
+              <input type="file" name="file" accept="application/pdf,.pdf" required={!editingItem} onChange={change} />
+            </label>
+
+            {editingItem?.file_url && (
+              <a className="text-link" href={editingItem.file_url} target="_blank" rel="noreferrer">
+                View current PDF
+              </a>
+            )}
+
+            {error && <div className="form-error" role="alert">{error}</div>}
+            {message && <div className="form-success" role="status">{message}</div>}
+
+            <div className="archive-admin-form-actions">
+              <button className="btn btn-acid" type="submit" disabled={saving}>
+                <Plus size={16} />
+                {saving ? 'Saving...' : editingItem ? 'Save changes' : 'Add to archive'}
+              </button>
+              {editingItem && (
+                <button className="btn btn-ghost" type="button" onClick={onCancelEdit}>
+                  Cancel edit
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   )
 }
 
-/* ─── MAIN PAGE ──────────────────────────────────────────────── */
 export default function Archive() {
-  const [filter, setFilter] = useState('All')
-  const branches = ['All', 'CSE', 'ISE', 'ECE']
-  const reportCount = companies.reduce((total, company) => total + company.reports.length, 0)
+  const { user, token } = useApp()
+  const isAdmin = user?.role === 'admin'
 
-  const filtered = filter === 'All'
-    ? companies
-    : companies.filter(c => c.tags.includes(filter))
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
+  const [sortOrder, setSortOrder] = useState('newest')
+
+  // Separate filters
+  const [handbookYearFilter, setHandbookYearFilter] = useState('All')
+  const [reportYearFilter, setReportYearFilter] = useState('All')
+  const [branchFilter, setBranchFilter] = useState('All')
+
+  const [viewer, setViewer] = useState(null)
+  const [showAdminPanel, setShowAdminPanel] = useState(false)
+  const [editingItem, setEditingItem] = useState(null)
+  const [form, setForm] = useState({ ...initialForm })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+
+  const loadItems = useCallback(async () => {
+    setLoading(true)
+    setLoadError('')
+    try {
+      const data = await apiRequest('/archive', { token })
+      setItems((data.items || []).map(item => (
+        item.file_url?.startsWith('/archive-files/')
+          ? { ...item, file_url: getApiAssetUrl(item.file_url) }
+          : item
+      )))
+    } catch (requestError) {
+      setLoadError(requestError.message || 'Could not load archive items.')
+    } finally {
+      setLoading(false)
+    }
+  }, [token])
+
+  useEffect(() => {
+    loadItems()
+  }, [loadItems])
+
+  // Years available for handbooks
+  const handbookYears = useMemo(() => (
+    [...new Set(
+      items.filter(i => i.type === 'handbook').map(i => String(i.year))
+    )].sort((a, b) => Number(b) - Number(a))
+  ), [items])
+
+  // Years available for student reports
+  const reportYears = useMemo(() => (
+    [...new Set(
+      items.filter(i => i.type === 'report').map(i => String(i.year))
+    )].sort((a, b) => Number(b) - Number(a))
+  ), [items])
+
+  const handbooks = useMemo(() => {
+    return items
+      .filter(item => item.type === 'handbook')
+      .filter(item => handbookYearFilter === 'All' || String(item.year) === handbookYearFilter)
+      .sort((a, b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year)
+  }, [items, sortOrder, handbookYearFilter])
+
+  const companies = useMemo(() => {
+    const grouped = items
+      .filter(item => item.type === 'report')
+      .reduce((groups, report) => {
+        const group = groups.get(report.company) || []
+        group.push(report)
+        groups.set(report.company, group)
+        return groups
+      }, new Map())
+
+    return Array.from(grouped, ([name, reports]) => ({
+      name,
+      reports: reports
+        .filter(report => reportYearFilter === 'All' || String(report.year) === reportYearFilter)
+        .sort((a, b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year)
+    }))
+      .filter(company => company.reports.length > 0)
+      .filter(company => branchFilter === 'All' || companyDetails[company.name]?.tags.includes(branchFilter))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [items, branchFilter, sortOrder, reportYearFilter])
+
+  const editItem = item => {
+    setEditingItem(item)
+    setError('')
+    setMessage('')
+    setForm({
+      type: item.type,
+      title: item.title || '',
+      student_name: item.student_name || '',
+      company: item.company || '',
+      year: String(item.year),
+      package: item.package || '',
+      description: item.description || '',
+      file: null
+    })
+  }
+
+  const openEdit = item => {
+    editItem(item)
+    setShowAdminPanel(true)
+  }
+
+  const cancelEdit = () => {
+    setEditingItem(null)
+    setError('')
+    setMessage('')
+    setForm({ ...initialForm })
+  }
+
+  const submitItem = async event => {
+    event.preventDefault()
+    setError('')
+    setMessage('')
+    setSaving(true)
+
+    const body = new FormData()
+    body.append('type', form.type)
+    body.append('year', form.year)
+
+    if (form.type === 'report') {
+      body.append('student_name', form.student_name.trim())
+      body.append('company', form.company.trim())
+      body.append('package', form.package.trim())
+    } else {
+      body.append('title', form.title.trim())
+      body.append('description', form.description.trim())
+    }
+    if (form.file) body.append('file', form.file)
+
+    try {
+      const result = await apiRequest(
+        editingItem ? `/archive/${editingItem.id}` : '/archive',
+        { method: editingItem ? 'PUT' : 'POST', body, token }
+      )
+      setMessage(result.message || 'Archive item saved.')
+      setEditingItem(null)
+      setForm({ ...initialForm })
+      await loadItems()
+    } catch (saveError) {
+      setError(saveError.message || 'Could not save this archive item.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const deleteItem = async item => {
+    const itemName = item.title || `${item.student_name}'s ${item.company} report`
+    const confirmed = window.confirm(`Are you sure you want to delete "${itemName}"? This action cannot be undone.`)
+
+    if (!confirmed) return
+
+    setLoadError('')
+    try {
+      const result = await apiRequest(`/archive/${item.id}`, {
+        method: 'DELETE',
+        token
+      })
+      setMessage(result.message || 'Archive item deleted successfully.')
+      await loadItems()
+    } catch (deleteError) {
+      setLoadError(deleteError.message || 'Could not delete this archive item.')
+    }
+  }
+
+  const reports = items.filter(item => item.type === 'report')
+  const reportCount = reports.length
+  const companyCount = new Set(reports.map(item => item.company)).size
 
   return (
     <div className="archive-page">
-
-      {/* ── HERO ── */}
       <header className="archive-hero">
-        <span className="archive-eyebrow">APTI CLUB / RESOURCE ARCHIVE</span>
+        <div className="archive-hero-top">
+          <span className="archive-eyebrow">APTI CLUB / RESOURCE ARCHIVE</span>
+          {isAdmin && (
+            <button className="admin-toggle-btn" type="button" onClick={() => setShowAdminPanel(true)}>
+              <Settings size={16} /> Manage Archive
+            </button>
+          )}
+        </div>
         <h1 className="archive-h1">Prepare with<br /><em>confidence.</em></h1>
         <p className="archive-sub">
           Placement handbooks and first-hand interview experiences to help you take the next step in your career.
         </p>
         <div className="archive-highlights" aria-label="Archive contents">
           <span><b>{handbooks.length}</b> handbooks & reports</span>
-          <span><b>{companies.length}</b> companies</span>
+          <span><b>{companyCount}</b> companies</span>
           <span><b>{reportCount}</b> student experiences</span>
         </div>
       </header>
 
-      {/* ── HANDBOOKS ── */}
-      <section className="archive-section">
-        <div className="archive-section-header">
-          <BookOpen size={20} />
-          <div>
-            <h2>Handbooks & Reports</h2>
-            <p>Placement preparation guides and batch reports — download and share with your batch.</p>
-          </div>
-        </div>
-        <div className="handbooks-grid">
-          {handbooks.map(book => (
-            <HandbookCard key={book.id} book={book} />
-          ))}
-        </div>
-      </section>
+      {/* Global sort only */}
+      <div className="archive-controls">
+        <button
+          className="sort-btn"
+          type="button"
+          onClick={() => setSortOrder(value => value === 'newest' ? 'oldest' : 'newest')}
+        >
+          <ArrowUpDown size={14} />
+          Sort by Year: {sortOrder === 'newest' ? 'Newest first' : 'Oldest first'}
+        </button>
+      </div>
 
-      {/* ── COMPANY REPORTS ── */}
-      <section className="archive-section">
-        <div className="archive-section-header">
-          <Briefcase size={20} />
-          <div>
-            <h2>Company Interview Reports</h2>
-            <p>First-hand accounts from students who cleared each stage — read their experience, then download the full PDF.</p>
-          </div>
+      {loading && <div className="empty-state">Loading archive...</div>}
+      {!loading && loadError && (
+        <div className="empty-state" role="alert">
+          {loadError}
+          <button type="button" className="text-link" onClick={loadItems}>Retry</button>
         </div>
+      )}
 
-        {/* Filter */}
-        <div className="company-filter" role="group" aria-label="Filter reports by branch">
-          <Filter size={14} />
-          {branches.map(b => (
-            <button
-              key={b}
-              className={`filter-btn ${filter === b ? 'filter-btn--active' : ''}`}
-              aria-pressed={filter === b}
-              onClick={() => setFilter(b)}
-            >
-              {b}
-            </button>
-          ))}
-        </div>
+      {!loading && !loadError && (
+        <>
+          {/* ── HANDBOOKS ── */}
+          <section className="archive-section">
+            <div className="archive-section-header">
+              <BookOpen size={20} />
+              <div>
+                <h2>Handbooks & Reports</h2>
+                <p>Placement preparation guides and batch reports.</p>
+              </div>
+            </div>
 
-        <div className="companies-grid">
-          {filtered.map(c => (
-            <CompanyCard key={c.id} company={c} />
-          ))}
-        </div>
+            {/* Separate year filter for handbooks */}
+            <div className="year-filter">
+              <span className="filter-label">Filter by Year:</span>
+              <button
+                type="button"
+                className={`filter-btn ${handbookYearFilter === 'All' ? 'filter-btn--active' : ''}`}
+                onClick={() => setHandbookYearFilter('All')}
+              >
+                All
+              </button>
+              {handbookYears.map(year => (
+                <button
+                  key={year}
+                  type="button"
+                  className={`filter-btn ${handbookYearFilter === year ? 'filter-btn--active' : ''}`}
+                  onClick={() => setHandbookYearFilter(year)}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
 
-        {filtered.length === 0 && (
-          <p className="archive-empty">No company reports for this branch yet — check back soon.</p>
-        )}
-      </section>
+            <div className="handbooks-grid">
+              {handbooks.map(book => (
+                <HandbookCard
+                  key={book.id}
+                  book={book}
+                  isAdmin={isAdmin}
+                  onEdit={openEdit}
+                  onDelete={deleteItem}
+                  onOpen={setViewer}
+                />
+              ))}
+            </div>
+            {handbooks.length === 0 && (
+              <p className="archive-empty">No handbooks match this year.</p>
+            )}
+          </section>
 
+          {/* ── COMPANY INTERVIEW REPORTS ── */}
+          <section className="archive-section">
+            <div className="archive-section-header">
+              <Briefcase size={20} />
+              <div>
+                <h2>Company Interview Reports</h2>
+                <p>First-hand accounts from students who cleared each stage.</p>
+              </div>
+            </div>
+
+            {/* Branch filter */}
+            <div className="company-filter" role="group" aria-label="Filter reports by branch">
+              <Filter size={14} />
+              {['All', 'CSE', 'ISE', 'ECE'].map(branch => (
+                <button
+                  key={branch}
+                  type="button"
+                  className={`filter-btn ${branchFilter === branch ? 'filter-btn--active' : ''}`}
+                  aria-pressed={branchFilter === branch}
+                  onClick={() => setBranchFilter(branch)}
+                >
+                  {branch}
+                </button>
+              ))}
+            </div>
+
+            {/* Separate year filter for student reports */}
+            <div className="year-filter">
+              <span className="filter-label">Filter by Year:</span>
+              <button
+                type="button"
+                className={`filter-btn ${reportYearFilter === 'All' ? 'filter-btn--active' : ''}`}
+                onClick={() => setReportYearFilter('All')}
+              >
+                All
+              </button>
+              {reportYears.map(year => (
+                <button
+                  key={year}
+                  type="button"
+                  className={`filter-btn ${reportYearFilter === year ? 'filter-btn--active' : ''}`}
+                  onClick={() => setReportYearFilter(year)}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+
+            <div className="companies-grid">
+              {companies.map(company => (
+                <CompanyCard
+                  key={company.name}
+                  company={company}
+                  isAdmin={isAdmin}
+                  onEdit={openEdit}
+                  onDelete={deleteItem}
+                  onOpen={setViewer}
+                />
+              ))}
+            </div>
+            {companies.length === 0 && (
+              <p className="archive-empty">No company reports match these filters yet.</p>
+            )}
+          </section>
+        </>
+      )}
+
+      {viewer && <PdfViewer item={viewer} onClose={() => setViewer(null)} />}
+
+      {isAdmin && showAdminPanel && (
+        <AdminPanel
+          saving={saving}
+          error={error}
+          message={message}
+          onClose={() => setShowAdminPanel(false)}
+          onSubmit={submitItem}
+          onCancelEdit={cancelEdit}
+          form={form}
+          setForm={setForm}
+          editingItem={editingItem}
+        />
+      )}
     </div>
   )
 }

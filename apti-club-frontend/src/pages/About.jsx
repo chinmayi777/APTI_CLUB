@@ -279,25 +279,39 @@ export default function About() {
         </div>
       </section>
 
-      <section className="about-voices">
-        <div className="about-voices-copy">
-          <span className="eyebrow">05 / STUDENT VOICES</span>
-          <h2>Every journey<br />has a <em>story.</em></h2>
-          <p>
-            We want this space to reflect real student experiences — what they
-            learned, how they grew and how Apti Club supported their placement
-            preparation. Verified student reviews and placement stories will be
-            featured here as they are collected.
-          </p>
-        </div>
-        <div className="about-voices-card">
-          <MessageCircle size={25} />
-          <span className="eyebrow">YOUR EXPERIENCE MATTERS</span>
-          <h3>Help the next student take their next step.</h3>
-          <p>Share an honest experience of a session, resource or activity that helped you prepare.</p>
-          <span className="about-voices-note">REAL STORIES · REAL STUDENT VOICES</span>
-        </div>
-      </section>
+    <section className="about-voices">
+            <div className="about-voices-copy">
+              <span className="eyebrow">05 / STUDENT VOICES</span>
+              <h2>Every journey<br />has a <em>story.</em></h2>
+              <p>
+                We want this space to reflect real student experiences — what they
+                learned, how they grew and how Apti Club supported their placement
+                preparation. Verified student reviews and placement stories will be
+                featured here as they are collected.
+              </p>
+              <a
+                href="https://www.instagram.com/apticlub_gsss/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-insta-link"
+              >
+                <img
+                  width="18"
+                  height="18"
+                  src="https://img.icons8.com/fluency/48/instagram-new.png"
+                  alt="Instagram"
+                />
+                @apticlub_gsss
+              </a>
+            </div>
+            <div className="about-voices-card">
+              <MessageCircle size={25} />
+              <span className="eyebrow">YOUR EXPERIENCE MATTERS</span>
+              <h3>Help the next student take their next step.</h3>
+              <p>Share an honest experience of a session, resource or activity that helped you prepare.</p>
+              <span className="about-voices-note">REAL STORIES · REAL STUDENT VOICES</span>
+            </div>
+          </section>
 
       <motion.section
         className="about-team"

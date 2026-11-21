@@ -371,6 +371,14 @@ export default function Home() {
     }
   }, [token, user])
 
+const tomorrow = new Date()
+tomorrow.setDate(tomorrow.getDate() + 1)
+const tomorrowStr = tomorrow.toISOString().slice(0, 10)
+
+const upcomingTomorrowEvents = events.filter(event => {
+  const eventDate = String(event.event_date).slice(0, 10)
+  return eventDate === tomorrowStr && event.status === 'published'
+})
   const myRegistrations = registrations.filter(
     registration =>
       user?.role === 'student' &&
@@ -464,6 +472,7 @@ export default function Home() {
                   View events <MoveUpRight size={16} />
                 </Link>
               </>
+
             ) : (
               <>
                 <Link className="btn btn-acid" to="/resources">
@@ -472,6 +481,21 @@ export default function Home() {
                 <Link className="btn btn-ghost" to="/events">
                   Join events <MoveUpRight size={16} />
                 </Link>
+                <a
+                  className="btn btn-ghost hero-insta-btn"
+                  href="https://www.instagram.com/apticlub_gsss/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    width="16"
+                    height="16"
+                    src="https://img.icons8.com/fluency/48/instagram-new.png"
+                    alt="Instagram"
+                    style={{ display: 'block' }}
+                  />
+                  @apticlub_gsss
+                </a>
               </>
             )}
           </motion.div>
@@ -537,6 +561,53 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {upcomingTomorrowEvents.length > 0 && (
+  <section className="section-shell upcoming-tomorrow-section">
+    <div className="section-heading">
+      <div>
+        <span className="eyebrow">HAPPENING TOMORROW</span>
+        <h2>Don't miss<br /><em>what's next.</em></h2>
+      </div>
+      <Link to="/events" className="text-link">
+        All events <ArrowUpRight size={16} />
+      </Link>
+    </div>
+
+    <div className="upcoming-tomorrow-list">
+      {upcomingTomorrowEvents.map(event => {
+        const isRegistered = myRegistrations.some(
+          r => Number(r.eventId) === Number(event.id)
+        )
+        return (
+          <article className="upcoming-tomorrow-card" key={event.id}>
+                    <div className="upcoming-tomorrow-meta">
+                      <span className="upcoming-tomorrow-badge">TOMORROW</span>
+                      <span><Clock size={13} /> {String(event.start_time || '').slice(0, 5)}</span>
+                      <span><MapPin size={13} /> {event.venue}</span>
+                    </div>
+                    <h3>{event.title}</h3>
+                    {event.description && (
+                      <p className="upcoming-tomorrow-desc">{event.description}</p>
+                    )}
+                    <div className="upcoming-tomorrow-footer">
+                      {isRegistered ? (
+                        <span className="registered-event-status">REGISTERED ✓</span>
+                      ) : (
+                        <Link
+                          to="/events"
+                          state={{ highlight: event.id }}
+                          className="btn btn-acid"
+                        >
+                          Register now <ArrowUpRight size={15} />
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </section>
+        )}
 
       {myRegistrations.length > 0 && (
         <section className="section-shell registered-events-section">

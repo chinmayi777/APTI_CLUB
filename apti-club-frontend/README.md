@@ -20,6 +20,9 @@ npm run preview
 ```
 The production bundle is generated in `dist/`. Serve this directory using Nginx or your college web server. Configure SPA fallback so unknown routes serve `index.html`.
 
+## Archive management
+Signed-in admins can use **Manage Archive** on `/archive` to add or edit student interview reports and handbooks. Reports include student name, company, year, package/CTC, and a PDF; handbooks include a title, year, description, and PDF. Archive records are stored in the backend MySQL `archive_items` table, which is created and seeded with the existing archive entries on the first archive request. Newly uploaded PDFs are stored under `backend/uploads/archive`, so deployments should provide persistent storage for that directory.
+
 ## Demo walkthrough
 1. Open Login → Create account. Use a sample USN such as `4XX23CS001` and a password of at least 6 characters.
 2. Browse Resources and Events. Register for an event while signed in as a student.
@@ -29,13 +32,7 @@ The production bundle is generated in `dist/`. Serve this directory using Nginx 
 6. Toggle the sun/moon icon to switch theme. Try Apti Bot with questions such as “What is today’s date and time?”, “Which events am I registered for?”, “Show my attendance”, “What upcoming events are available?”, “Show DBMS resources” or “What did I ask earlier?”.
 
 ## Important prototype boundary
-This is the **frontend-first functioning prototype**. Data is persisted in browser `localStorage`; the demo role picker is intentionally exposed for preview. Passwords are not securely stored and this must not be used with real student credentials. There is no MySQL connection, server-side JWT validation, real role authorization, multi-user synchronization, permanent image storage, or AI/LLM-powered chatbot yet. Apti Bot currently uses website data and predefined intent matching in the browser; it can answer the supported questions about the current app data but is not a general-purpose AI assistant. Those belong in the next backend phase. When the API is added:
-- Replace localStorage auth with server-issued JWT stored using a secure strategy (prefer HttpOnly, Secure, SameSite cookies).
-- Enforce roles and ownership in Express middleware; never trust a client role.
-- Hash passwords with bcrypt/argon2 and validate USNs server-side.
-- Store event poster files on server/object storage and persist their paths in MySQL.
-- Move registration capacity checks and attendance updates into database transactions.
-- Add audit fields for attendance coordinator and timestamp.
+Most demo UI state remains browser-local. Archive management is backed by the API and MySQL, with archive writes restricted by server-side admin role checks. Uploaded archive PDFs are stored on the backend filesystem, so deployments must persist `backend/uploads/archive`. The demo role picker is exposed for preview; do not use demo accounts with real student credentials. Apti Bot currently uses website data and predefined intent matching in the browser, not a general-purpose AI assistant.
 
 ## Structure
 ```text

@@ -44,11 +44,11 @@ router.put(
   updateEvent
 );
 
-// Only Admin can change event status
+// Admins and coordinators can publish or update event status
 router.patch(
   '/:id/status',
   authenticateToken,
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'coordinator'),
   updateEventStatus
 );
 

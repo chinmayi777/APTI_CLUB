@@ -308,7 +308,7 @@ export default function Admin() {
               </div>
 
               <div className="admin-event-actions">
-                {event.status === 'draft' && user.role === 'admin' && (
+                {event.status === 'draft' && (
                   <button
                     className="btn btn-acid"
                     type="button"
@@ -317,10 +317,6 @@ export default function Admin() {
                   >
                     {publishingId === event.id ? 'Publishing...' : 'Publish'}
                   </button>
-                )}
-
-                {event.status === 'draft' && user.role === 'coordinator' && (
-                  <span className="role-pill">Awaiting admin</span>
                 )}
 
                 <button

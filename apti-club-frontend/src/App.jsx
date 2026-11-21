@@ -12,6 +12,7 @@ import Auth from './pages/Auth'
 import Admin from './pages/Admin'
 import Coordinator from './pages/Coordinator'
 import CoordinatorManagement from './pages/CoordinatorManagement'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 function RoleRoute({ allowedRoles, children }) {
@@ -55,9 +56,9 @@ function AnimatedRoutes() {
         >
           <Routes location={location}>
             <Route path="/" element={<Home />} />
-            <Route path="/resources/:category?" element={<Resources/>}/>            
-            <Route path="/events" element={<Events />} />
-            <Route path="/archive" element={<Archive />} />
+            <Route path="/resources/:category?" element={<ProtectedRoute><Resources/></ProtectedRoute>}/>            
+            <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+            <Route path="/archive" element={<ProtectedRoute><Archive /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/admin/coordinators" element={<RoleRoute allowedRoles={['admin']}><CoordinatorManagement /></RoleRoute>}/>

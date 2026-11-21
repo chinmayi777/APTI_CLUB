@@ -8,6 +8,9 @@ import adminRoutes from './routes/adminRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import registrationRoutes from './routes/registrationRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
+import archiveRoutes from './routes/archiveRoutes.js';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 dotenv.config();
 
@@ -55,6 +58,11 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/archive', archiveRoutes);
+app.use(
+  '/archive-files',
+  express.static(path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'uploads/archive'))
+);
 
 const PORT = process.env.PORT || 5000;
 

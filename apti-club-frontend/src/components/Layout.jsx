@@ -80,8 +80,25 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Apti Club  Built for the next generation.</p>
+        <p>© {new Date().getFullYear()} APTI Club</p>
         <span>DREAM·DISCOVER·DEFINE</span>
+        <p className="footer-social">
+          Follow us on{' '}
+          <a
+            href="https://www.instagram.com/apticlub_gsss/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-insta-link"
+          >
+            <img
+              width="16"
+              height="16"
+              src="https://img.icons8.com/fluency/48/instagram-new.png"
+              alt="Instagram"
+            />
+            @apticlub_gsss
+          </a>
+        </p>
       </div>
     </footer>
   )

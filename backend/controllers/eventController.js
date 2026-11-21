@@ -194,6 +194,13 @@ export const updateEventStatus = async (req, res) => {
     const { status } = req.body;
     const allowedStatuses = ['draft', 'published', 'cancelled', 'completed'];
 
+    if (req.user.role === 'coordinator' && status !== 'published') {
+      return res.status(403).json({
+        success: false,
+        message: 'Coordinators can only publish events'
+      });
+    }
+
     if (!allowedStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
