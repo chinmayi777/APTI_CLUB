@@ -4,6 +4,8 @@ import { Menu, X, Sun, Moon, ArrowUpRight, UserRound, LogOut } from 'lucide-reac
 import { useApp } from '../context'
 import Chatbot from './Chatbot'
 import logo from '../image.png'
+import logoLeft from '../assets/logo-gsss-left.png'
+import logoRight from '../assets/logo-gsss-right.png'
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -12,13 +14,19 @@ export function Header() {
     ['Home', '/'],
     ['Resources', '/resources'],
     ['Events', '/events'],
-    ['Event Archive', '/archive'],
+    ['Archive', '/archive'],
     ['About', '/about'],
   ]
 
   return (
     <header className="site-header">
       <div className="nav-inner">
+        <div className="inst-brand" aria-label="GSSSIETW">
+          <img src={logoLeft} alt="GSSS emblem" />
+          <span>GSSSIETW</span>
+          <img src={logoRight} alt="GSSSIETW logo" />
+        </div>
+        <span className="inst-divider" aria-hidden="true" />
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <span className="brand-mark"><img src={logo} alt="image" /></span> APTI CLUB
         </Link>
@@ -47,7 +55,7 @@ export function Header() {
 
           {user ? (
             <div className="profile-wrap">
-              <Link className="profile-link" to="/dashboard">
+              <Link className="profile-link" to="/">
                 <UserRound size={16} />
                 <span>{user.name.split(' ')[0]}</span>
               </Link>
@@ -80,8 +88,25 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Apti Club  Built for the next generation.</p>
+        <p>© {new Date().getFullYear()} APTI Club</p>
         <span>DREAM·DISCOVER·DEFINE</span>
+        <p className="footer-social">
+          Follow us on{' '}
+          <a
+            href="https://www.instagram.com/apticlub_gsss/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-insta-link"
+          >
+            <img
+              width="16"
+              height="16"
+              src="https://img.icons8.com/fluency/48/instagram-new.png"
+              alt="Instagram"
+            />
+            @apticlub_gsss
+          </a>
+        </p>
       </div>
     </footer>
   )

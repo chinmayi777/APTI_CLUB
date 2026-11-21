@@ -19,6 +19,13 @@ import {
   CheckCircle2,
   TrendingUp,
   Users,
+  Youtube,
+  Globe,
+  Bot,
+  Wand2,
+  Code2,
+  Layers,
+  Search,
 } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ResourceCard from '../components/ResourceCard'
@@ -27,6 +34,8 @@ import personalityBg from '../assets/personality-bg.png'
 import interviewBg from '../assets/interview-bg.png'
 import dsaBg from '../assets/dsa-bg.png'
 import resumeBg from '../assets/resume-bg.png'
+import aiBg from '../assets/ai-bg.png'
+import '../ai-arena.css'
 
 const categories = [
   {
@@ -53,6 +62,11 @@ const categories = [
     name: 'Resume Building',
     slug: 'resume',
     description: 'Build an impressive, ATS-friendly resume that gets noticed.',
+  },
+  {
+    name: 'AI Arena',
+    slug: 'ai',
+    description: 'Learn AI, machine learning and generative AI with free courses, channels and tools.',
   }
 ]
 
@@ -74,13 +88,13 @@ const guides = {
       { label: 'Review Mistakes', desc: 'Every wrong answer is a free lesson — read the solution carefully.', icon: 'spark' },
       { label: 'Full Mock Tests', desc: 'Simulate company assessments with realistic conditions.', icon: 'rocket' },
     ],
-    tip: 'Solve 10–15 questions every day. Track your accuracy percentage, not just question count.',
+    tip: 'Take the Bizotic weekly assesments without fail, it actually helps. Solve 10–15 questions every day. Track your accuracy percentage, not just question count.',
     links: [
       { name: 'IndiaBix', url: 'https://www.indiabix.com', desc: 'The go-to for aptitude MCQs with detailed solutions. Covers every topic from basic to advanced with company-specific question sets.', tag: 'Practice' },
       { name: 'PrepInsta', url: 'https://prepinsta.com', desc: 'Company-specific aptitude papers, dashboards and timed mock tests. Especially useful once you know which companies you are targeting.', tag: 'Company Prep' },
-      { name: 'Testbook', url: 'https://testbook.com', desc: 'Full-length adaptive mock tests with analytics. Good for identifying weak areas and tracking improvement over time.', tag: 'Mock Tests' },
-      { name: 'Brilliant.org', url: 'https://brilliant.org', desc: 'Visual, interactive problem-solving for quantitative reasoning. Builds intuition rather than just formula recall — great for AMCAT and CoCubes style tests.', tag: 'Concept Building' },
-      { name: 'Mercer | Mettl Blog', url: 'https://mettl.com/blog', desc: 'Explains how gamified and psychometric assessments work, with sample questions. Helpful for understanding scoring logic before the actual test.', tag: 'Gamified Prep' },
+      { name: 'MockPrep', url: 'https://www.mockprep.co.in/gate-mock-tests/general-aptitude', desc: 'Full-length adaptive mock tests with analytics. Good for identifying weak areas and tracking improvement over time.', tag: 'Mock Tests' },
+      { name: 'SelfStudy', url: 'https://www.selfstudys.com/mcq/gate/online/mock-test/general-aptitude', desc: 'Provide multiple timed 20-minute sectional mock tests.', tag: 'Mock Tests' },
+      { name: 'TCYonline', url: 'https://www.tcyonline.com/tests/aptitude-test-for-gate', desc: 'Topic-wise and mixed numerical aptitude practice series with customizable time limits and difficulty levels.', tag: 'Mock Tests'},
       { name: 'MindTree Aptitude Papers', url: 'https://www.m4maths.com', desc: 'Real placement papers from top companies with difficulty ratings. Filter by company name and practice the exact question types they use.', tag: 'Placement Papers' },
     ],
   },
@@ -222,6 +236,109 @@ const guides = {
   },
   ],
   },
+  ai: {
+    intro: 'Artificial intelligence is changing how software is built and how work gets done. You do not need to be an expert to start — you need a clear path, good resources and projects that prove what you can do.',
+    goal: 'Understand AI, machine learning and generative AI, use AI tools responsibly, and build projects you can show in interviews.',
+    flashcards: [
+      { front: 'AI, ML & Deep Learning', back: 'AI is the broad goal of machines doing tasks that need intelligence. Machine learning learns patterns from data, and deep learning uses neural networks to do it at scale. Know how the three relate before diving into any one.' },
+      { front: 'Machine Learning Basics', back: 'Learn regression, classification and clustering, and how to split data, train a model and evaluate it. Understanding overfitting and why we test on unseen data matters more than memorising algorithms.' },
+      { front: 'Generative AI & Prompting', back: 'Large language models generate text by predicting what comes next. Clear prompts with context, examples and a defined format give much better results. Learn prompt engineering, RAG and how AI agents work.' },
+      { front: 'AI Tools & Vibe Coding', back: 'Tools like Perplexity and NotebookLM speed up learning and research, and vibe coding tools like Cursor, Lovable and Bolt turn ideas into apps. Always check the output and make sure you understand it.' },
+      { front: 'Build & Ethics', back: 'Projects such as a chatbot, resume analyser, PDF question-answering app or interview mentor show real skill. Alongside, learn responsible AI: privacy, bias, plagiarism and fact-checking.' },
+    ],
+    steps: [
+      { label: 'Learn the Foundations', desc: 'Understand AI, ML, deep learning and generative AI, and what each can do.', icon: 'brain' },
+      { label: 'Get Python Ready', desc: 'Learn Python, NumPy, Pandas and the basic maths behind models.', icon: 'book' },
+      { label: 'Study Machine Learning', desc: 'Practise regression, classification, clustering and model evaluation on real datasets.', icon: 'chart' },
+      { label: 'Explore Deep & Generative AI', desc: 'Learn neural networks, Transformers, LLMs, prompt engineering, RAG and agents.', icon: 'spark' },
+      { label: 'Build & Publish Projects', desc: 'Build, test and share real AI applications on GitHub.', icon: 'rocket' },
+    ],
+    tip: 'Do not just watch videos. Pick one small AI project, build it end to end and put it on GitHub — it will teach you more than ten tutorials.',
+    sections: [
+      {
+        num: '01', title: 'Foundations', level: 'Beginner', icon: 'brain',
+        desc: 'Start from zero. Understand what AI really is, what it can and cannot do, and the vocabulary everyone uses.',
+        sites: [
+          { name: 'Elements of AI', url: 'https://www.elementsofai.com/', desc: 'A free introductory course on what AI is and how it affects everyday life. No coding or advanced maths needed.', tag: 'Free Course' },
+          { name: 'Google AI — Learn AI Skills', url: 'https://ai.google/learn-ai-skills/', desc: "Google's learning paths covering AI basics and generative AI, with real product examples.", tag: 'Learning Path' },
+          { name: 'AWS — New to AI', url: 'https://aws.amazon.com/ai/learn/new-to-ai/', desc: 'A beginner-friendly introduction to AI and machine learning concepts from AWS.', tag: 'Intro' },
+        ],
+        videos: [
+          { name: 'freeCodeCamp', url: 'https://www.youtube.com/@freecodecamp', desc: 'Complete AI, machine learning and Python courses you can follow from start to finish.', tag: 'Full Courses' },
+          { name: 'Google', url: 'https://www.youtube.com/@Google', desc: 'AI explainers and tutorials straight from Google.', tag: 'Explainers' },
+        ],
+      },
+      {
+        num: '02', title: 'Machine Learning', level: 'Beginner → Intermediate', icon: 'chart',
+        desc: 'Learn how machines learn from data: regression, classification, clustering and how to judge a model.',
+        sites: [
+          { name: 'Kaggle Learn', url: 'https://www.kaggle.com/learn', desc: 'Short hands-on micro-courses in Python, pandas and machine learning that run in your browser.', tag: 'Hands-on' },
+          { name: 'Google ML Crash Course', url: 'https://developers.google.com/machine-learning', desc: 'Well-structured ML concepts with exercises on how models are trained and evaluated.', tag: 'Crash Course' },
+          { name: 'Coursera', url: 'https://www.coursera.org/', desc: 'University and industry machine learning courses. Many can be audited for free.', tag: 'Courses' },
+        ],
+        videos: [
+          { name: 'Krish Naik', url: 'https://www.youtube.com/@krishnaik06', desc: 'Practical machine learning, data science and generative AI tutorials, popular with Indian students.', tag: 'Practical ML' },
+          { name: 'freeCodeCamp', url: 'https://www.youtube.com/@freecodecamp', desc: 'Full-length machine learning courses with code you can follow along.', tag: 'Full Courses' },
+        ],
+      },
+      {
+        num: '03', title: 'Generative AI & Prompting', level: 'Intermediate', icon: 'spark',
+        desc: 'Understand large language models, write better prompts and learn RAG and AI agents.',
+        sites: [
+          { name: 'OpenAI Academy', url: 'https://academy.openai.com/', desc: 'Learn AI and practical AI workflows, including how to use AI well for study, work and projects.', tag: 'Academy' },
+          { name: 'DeepLearning.AI', url: 'https://www.deeplearning.ai/', desc: 'Courses on generative AI, LLMs and deep learning from a leading AI education platform.', tag: 'Courses' },
+          { name: 'Hugging Face Learn', url: 'https://huggingface.co/learn', desc: 'Free courses on LLMs, NLP and Transformers, taught with open-source models and code.', tag: 'LLMs & NLP' },
+          { name: 'Prompt Engineering Guide', url: 'https://www.promptingguide.ai/', desc: 'Practical prompting techniques with examples and explanations of how they work.', tag: 'Prompting' },
+        ],
+        videos: [
+          { name: 'DeepLearning.AI', url: 'https://www.youtube.com/@DeeplearningAI', desc: 'Talks, short lessons and course previews on deep learning and generative AI.', tag: 'Lessons' },
+          { name: 'Google Cloud Tech', url: 'https://www.youtube.com/@GoogleCloudTech', desc: 'Tutorials on building and deploying AI and machine learning applications.', tag: 'Tutorials' },
+          { name: 'Andrej Karpathy', url: 'https://www.youtube.com/@AndrejKarpathy', desc: 'Deep, clear lessons on how neural networks and LLMs work, built from scratch.', tag: 'Deep Dives' },
+        ],
+      },
+      {
+        num: '04', title: 'AI Tools', level: 'All levels', icon: 'bot',
+        desc: 'Tools that make you faster at learning, researching and coding. Use them to understand, not to skip understanding.',
+        sites: [
+          { name: 'Perplexity', url: 'https://www.perplexity.ai/', desc: 'AI-powered search that answers questions with sources. Great for research.', tag: 'Research' },
+          { name: 'NotebookLM', url: 'https://notebooklm.google.com/', desc: 'Upload notes, PDFs and documents and study from them with AI summaries and Q&A.', tag: 'Study' },
+          { name: 'Hugging Face', url: 'https://huggingface.co/', desc: 'Explore open-source AI models, datasets and projects, and try models in the browser.', tag: 'Models' },
+          { name: 'Claude', url: 'https://claude.ai/', desc: 'An AI assistant for studying, writing, analysing documents and coding. Good at explaining things step by step.', tag: 'Assistant' },
+          { name: 'Google Antigravity', url: 'https://antigravity.google/', desc: 'Google\'s AI-powered development environment where AI agents help you plan, write and test code.', tag: 'AI Coding' },
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', desc: 'AI-assisted coding inside your editor. Great for learning if you understand what it suggests.', tag: 'Coding' },
+        ],
+        videos: [
+        ],
+      },
+      {
+        num: '05', title: 'Vibe Coding Tools', level: 'All levels', icon: 'wand',
+        desc: 'Describe what you want in plain English and let AI build it. Fast for prototypes, but always read and understand the code it writes.',
+        sites: [
+          { name: 'Cursor', url: 'https://cursor.com/', desc: 'An AI-first code editor that can write, edit and explain code across your whole project.', tag: 'AI Editor' },
+          { name: 'Lovable', url: 'https://lovable.dev/', desc: 'Describe an app in plain language and get a working, editable web app you can publish.', tag: 'App Builder' },
+          { name: 'Bolt.new', url: 'https://bolt.new/', desc: 'Prompt, run and deploy full-stack web apps right in your browser.', tag: 'App Builder' },
+          { name: 'Replit', url: 'https://replit.com/', desc: 'Build, run and host projects in the browser with an AI agent that helps you code.', tag: 'Browser IDE' },
+          { name: 'v0 by Vercel', url: 'https://v0.app/', desc: 'Turn a prompt into a ready-to-use user interface and front-end code.', tag: 'UI Generator' },
+          { name: 'Emergent', url: 'https://emergent.sh/', desc: 'Describe the app you want and an AI agent builds, tests and deploys it for you.', tag: 'App Builder' },
+        ],
+        videos: [
+        ],
+      },
+      {
+        num: '06', title: 'Practice & Build', level: 'Intermediate → Advanced', icon: 'code',
+        desc: 'Stop watching, start building. Run code, enter competitions and publish your own AI projects.',
+        sites: [
+          { name: 'Google Colab', url: 'https://colab.research.google.com/', desc: 'Run Python and machine learning code in the browser with no setup, including free GPU access.', tag: 'Notebook' },
+          { name: 'Kaggle', url: 'https://www.kaggle.com/', desc: 'Datasets, notebooks and competitions to practise on real machine learning problems.', tag: 'Competitions' },
+          { name: 'PyTorch Tutorials', url: 'https://pytorch.org/tutorials/', desc: 'Official tutorials for deep learning with PyTorch, from basics to advanced.', tag: 'Deep Learning' },
+          { name: 'TensorFlow Tutorials', url: 'https://www.tensorflow.org/tutorials', desc: 'Official tutorials for machine learning and neural networks with TensorFlow.', tag: 'Deep Learning' },
+          { name: 'GitHub', url: 'https://github.com/', desc: 'Explore open-source AI projects, read real code and publish your own work.', tag: 'Projects' },
+        ],
+        videos: [
+        ],
+      },
+    ],
+  },
 }
 
 const themes = {
@@ -264,6 +381,14 @@ const themes = {
     glow: 'rgba(251, 113, 133, 0.2)',
     label: 'Resume Building',
     backgroundImage: `url(${resumeBg})`
+  },
+  ai: {
+    bg: '#0f172a',
+    accent: '#5eead4',
+    accentDim: 'rgba(94, 234, 212, 0.15)',
+    glow: 'rgba(94, 234, 212, 0.2)',
+    label: 'AI Arena',
+    backgroundImage: `url(${aiBg})`
   }
 }
 
@@ -318,6 +443,13 @@ const roadmapDetails = {
     'Choose two or three projects that demonstrate abilities relevant to your target role. Explain the problem, your contribution, technologies, and result; use numbers only when you can support them. Strong bullets show decisions and impact, not just a list of tools or features.',
     'Include relevant certifications, awards, hackathon results, leadership, volunteering, or open-source contributions that add useful context. Give each item enough detail to show what you accomplished, while keeping the section concise. If an item does not support your target role or reveal a meaningful strength, use the space for stronger evidence.',
     'Review spelling, grammar, formatting, and consistency, then ask another person to check clarity. Confirm links and dates, and make sure the final PDF remains readable on another device. Use a professional filename and tailor the finished version to the role before submitting it.',
+  ],
+  ai: [
+    'Start with what AI, machine learning, deep learning and generative AI each mean, and how they relate. Use a beginner course such as Elements of AI and write a short summary in your own words. Aim to explain the differences clearly before moving on.',
+    'Learn Python well enough to read and write small programs, then add NumPy and Pandas for working with data. Refresh the basic maths you need, such as averages, probability and simple algebra. Practise on small datasets so the tools feel familiar.',
+    'Work through regression, classification and clustering, and learn how to split data, train a model and measure its quality. Use Kaggle Learn or the Google ML Crash Course and apply each idea to a real dataset. Pay attention to overfitting and why results on unseen data matter.',
+    'Learn how neural networks work, then move on to Transformers and large language models. Practise prompt engineering and try retrieval-augmented generation (RAG) and simple AI agents using Hugging Face and DeepLearning.AI material. Keep notes on what works and why.',
+    'Pick a project such as a chatbot, resume analyser, PDF question-answering app or interview mentor, and build it end to end. Test it with real inputs, write a clear README and publish it on GitHub. Be ready to explain your design choices and limits in an interview.',
   ],
 }
 /* ─── FLASHCARD COMPONENT ───────────────────────────────────── */
@@ -487,15 +619,156 @@ function LinkItem({ item, theme }) {
   )
 }
 
+/* ─── AI ARENA SECTIONS ─────────────────────────────────────── */
+const aiIcons = { brain: Brain, chart: BarChart3, spark: Sparkles, bot: Bot, wand: Wand2, code: Code2 }
+const aiHues = ['#7aa2d6']
+const aiLevelDots = { 'All levels': 0, Beginner: 1, 'Beginner → Intermediate': 2, Intermediate: 3, 'Intermediate → Advanced': 4 }
+
+function AiLink({ item, kind }) {
+  return (
+    <a href={item.url} target="_blank" rel="noopener noreferrer" className={`ai-link ai-link-${kind}`}>
+      <span className="ai-link-icon">
+        {kind === 'video' ? <Youtube size={18} /> : item.name.trim().charAt(0).toUpperCase()}
+      </span>
+      <span className="ai-link-body">
+        <span className="ai-link-top">
+          <b>{item.name}</b>
+          <em>{item.tag}</em>
+        </span>
+        <span className="ai-link-desc">{item.desc}</span>
+      </span>
+      <ExternalLink size={15} className="ai-link-arrow" />
+    </a>
+  )
+}
+
+function AiSections({ sections }) {
+  const [query, setQuery] = useState('')
+  const [active, setActive] = useState(sections[0]?.num)
+  const q = query.trim().toLowerCase()
+  const match = item => !q || `${item.name} ${item.tag} ${item.desc}`.toLowerCase().includes(q)
+
+  const filtered = sections
+    .map(sec => ({ ...sec, sites: sec.sites.filter(match), videos: sec.videos.filter(match) }))
+    .filter(sec => !q || sec.sites.length || sec.videos.length)
+
+  const siteCount = sections.reduce((n, x) => n + x.sites.length, 0)
+  const videoCount = sections.reduce((n, x) => n + x.videos.length, 0)
+
+  React.useEffect(() => {
+    const nodes = sections.map(x => document.getElementById(`ai-${x.num}`)).filter(Boolean)
+    if (!nodes.length || typeof IntersectionObserver === 'undefined') return undefined
+    const io = new IntersectionObserver(
+      entries => {
+        const visible = entries.filter(e => e.isIntersecting).sort((x, y) => y.intersectionRatio - x.intersectionRatio)[0]
+        if (visible) setActive(visible.target.id.replace('ai-', ''))
+      },
+      { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.2, 0.5] }
+    )
+    nodes.forEach(n => io.observe(n))
+    return () => io.disconnect()
+  }, [sections, q])
+
+  return (
+    <section className="ai-library">
+      <div className="ai-stats">
+        <div><b>{sections.length}</b><span>Learning sections</span></div>
+        <div><b>{siteCount}</b><span>Websites &amp; tools</span></div>
+        <div><b>{videoCount}</b><span>YouTube channels</span></div>
+      </div>
+
+      <div className="ai-toolbar">
+        <nav className="ai-jump" aria-label="AI Arena sections">
+          {sections.map((sec, i) => (
+            <a
+              key={sec.num}
+              href={`#ai-${sec.num}`}
+              className={active === sec.num ? 'is-active' : ''}
+              style={{ '--sec': aiHues[i % aiHues.length] }}
+            >
+              <span>{sec.num}</span>{sec.title}
+            </a>
+          ))}
+        </nav>
+        <label className="ai-search">
+          <Search size={15} />
+          <input
+            type="search"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search tools, courses, channels…"
+            aria-label="Search AI Arena resources"
+          />
+        </label>
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="ai-empty">No resources match “{query}”. Try a different word.</p>
+      )}
+
+      {filtered.map((sec, i) => {
+        const Icon = aiIcons[sec.icon] || Layers
+        const hasVideos = sec.videos.length > 0
+        const dots = aiLevelDots[sec.level] ?? 0
+        const hue = aiHues[sections.findIndex(x => x.num === sec.num) % aiHues.length]
+        return (
+          <motion.div
+            key={sec.num}
+            id={`ai-${sec.num}`}
+            className="ai-section"
+            style={{ '--sec': hue }}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.45, delay: Math.min(i, 2) * 0.05 }}
+          >
+            <header className="ai-section-head">
+              <span className="ai-section-icon"><Icon size={24} /></span>
+              <div className="ai-section-title">
+                <span className="ai-section-kicker">SECTION {sec.num}</span>
+                <h2>{sec.title}</h2>
+                <p>{sec.desc}</p>
+              </div>
+              <span className="ai-level" title={sec.level}>
+                <span className="ai-meter" aria-hidden="true">
+                  {[1, 2, 3, 4].map(n => <i key={n} className={n <= dots ? 'on' : ''} />)}
+                </span>
+                {sec.level}
+              </span>
+            </header>
+            <div className={hasVideos ? 'ai-cols' : 'ai-cols ai-cols-single'}>
+              <div className="ai-col">
+                <h3 className="ai-col-title"><Globe size={15} /> Websites &amp; Tools <small>{sec.sites.length}</small></h3>
+                <div className={hasVideos ? 'ai-list' : 'ai-list ai-list-grid'}>
+                  {sec.sites.map(item => <AiLink key={item.url} item={item} kind="site" />)}
+                </div>
+              </div>
+              {hasVideos && (
+                <div className="ai-col ai-col-video">
+                  <h3 className="ai-col-title"><Youtube size={15} /> YouTube Channels <small>{sec.videos.length}</small></h3>
+                  <div className="ai-list">
+                    {sec.videos.map(item => <AiLink key={item.url} item={item} kind="video" />)}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+      })}
+    </section>
+  )
+}
+
 export default function Resources() {
   const { category } = useParams()
   const selected = categories.find(c => c.slug === category)
 
   if (!category) {
     return (
-      <div className="page-shell">
+      <div className="page-shell resource-library-page">
         <div className="page-hero">
-          <p className="eyebrow">THE RESOURCE LIBRARY / 01</p>
+          <span className="eyebrow">THE RESOURCE LIBRARY / 01</span>
+          <h1>Resources</h1>
         </div>
         <div className="resource-grid resource-library-grid">
           {categories.map((c, i) => (
@@ -522,7 +795,7 @@ export default function Resources() {
 
   return (
     <div
-      className="rg-page"
+      className={category === 'ai' ? 'rg-page ai-page' : 'rg-page'}
       style={{ '--bg': theme.bg, '--accent': theme.accent, '--accent-dim': theme.accentDim, '--glow': theme.glow }}
     >
       {/* Background gradient layer */}
@@ -553,7 +826,36 @@ export default function Resources() {
         </div>
       </motion.header>
 
-      {/* Two-column section */}
+      {guide.sections ? (
+        <>
+          <AiSections sections={guide.sections} />
+          <section className="rg-two-col ai-learn">
+        {/* RIGHT — Flashcards */}
+        <div className="rg-col-cards">
+          <div className="rg-col-header">
+            <Lightbulb size={20} />
+            <div>
+              <h2>What to learn</h2>
+              <p className="rg-col-sub">Tap each card to reveal what matters and why.</p>
+            </div>
+          </div>
+          <div className="rg-flashcard-grid">
+            {guide.flashcards.map((card, i) => (
+              <FlashCard key={i} card={card} theme={theme} index={i} />
+            ))}
+          </div>
+          {/* Tip */}
+          <div className="rg-tip">
+            <Lightbulb size={16} />
+            <div>
+              <span className="rg-tip-label">Apti Club Tip</span>
+              <p>{guide.tip}</p>
+            </div>
+          </div>
+        </div>
+          </section>
+        </>
+      ) : (
       <section className="rg-two-col">
         {/* LEFT — Links */}
         <div className="rg-col-links">
@@ -595,6 +897,7 @@ export default function Resources() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Roadmap */}
       <section className="rg-roadmap-section">

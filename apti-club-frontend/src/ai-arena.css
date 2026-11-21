@@ -1,0 +1,84 @@
+/* AI Arena — refined design (v2). Revert: restore backups/ai-arena-v1 */
+.ai-page .rg-bg{background:
+  radial-gradient(900px 500px at 12% -10%,rgba(94,234,212,.20),transparent 60%),
+  radial-gradient(800px 500px at 95% 10%,rgba(167,139,250,.18),transparent 60%),
+  radial-gradient(700px 500px at 50% 110%,rgba(125,211,252,.12),transparent 60%)}
+.ai-page .rg-title{background:linear-gradient(100deg,#fff 10%,#5eead4 55%,#a78bfa 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ai-page .rg-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(94,234,212,.4);border-radius:30px;background:rgba(94,234,212,.08)}
+
+.ai-page .ai-library{max-width:1220px;padding:6px 5.2% 24px}
+.ai-page .ai-stats{gap:14px;margin:10px 0 22px}
+.ai-page .ai-stats>div{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px 24px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02));backdrop-filter:blur(10px);transition:.25s}
+.ai-page .ai-stats>div:hover{transform:translateY(-3px);border-color:rgba(94,234,212,.5)}
+.ai-page .ai-stats>div:after{content:'';position:absolute;right:-30px;bottom:-40px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(94,234,212,.28),transparent 70%)}
+.ai-page .ai-stats b{font-size:46px;background:linear-gradient(120deg,#5eead4,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ai-page .ai-stats span{font-size:11px;letter-spacing:2px}
+
+.ai-toolbar{position:sticky;top:76px;z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;margin:0 0 28px;padding:12px 14px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(15,23,42,.78);backdrop-filter:blur(16px);box-shadow:0 12px 40px rgba(0,0,0,.28)}
+.ai-page .ai-jump{position:static;display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;background:none}
+.ai-page .ai-jump a{border-radius:10px;padding:8px 12px;font-size:12px;border:1px solid transparent;background:transparent;color:var(--muted)}
+.ai-page .ai-jump a span{color:var(--sec,#5eead4)}
+.ai-page .ai-jump a:hover{background:rgba(255,255,255,.06);color:#fff;transform:none;border-color:transparent}
+.ai-page .ai-jump a.is-active{color:#fff;border-color:var(--sec);background:color-mix(in srgb,var(--sec) 16%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--sec) 30%,transparent)}
+.ai-search{display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(0,0,0,.25);color:var(--muted);min-width:240px;transition:.2s}
+.ai-search:focus-within{border-color:#5eead4;box-shadow:0 0 0 3px rgba(94,234,212,.15)}
+.ai-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:13px}
+.ai-search input::placeholder{color:var(--muted)}
+.ai-empty{text-align:center;color:var(--muted);padding:40px 0}
+
+.ai-page .ai-section{--sec:#5eead4;border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:32px;margin-bottom:26px;background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 20px 60px rgba(0,0,0,.25);scroll-margin-top:170px}
+.ai-page .ai-section:before{inset:0 0 auto 0;width:auto;height:3px;background:linear-gradient(90deg,var(--sec),transparent 75%)}
+.ai-page .ai-section:after{background:radial-gradient(circle,color-mix(in srgb,var(--sec) 26%,transparent),transparent 70%)}
+.ai-page .ai-section-head{align-items:flex-start;gap:18px;margin-bottom:26px}
+.ai-page .ai-section-icon{width:54px;height:54px;flex:0 0 54px;border-radius:16px;color:var(--sec);background:color-mix(in srgb,var(--sec) 15%,transparent);border:1px solid color-mix(in srgb,var(--sec) 40%,transparent)}
+.ai-section-kicker{display:block;font-size:10px;font-weight:700;letter-spacing:2.4px;color:var(--sec);margin-bottom:6px}
+.ai-page .ai-section-title h2{font-size:30px;margin-bottom:8px}
+.ai-page .ai-section-title p{font-size:13.5px;max-width:680px}
+.ai-page .ai-level{display:inline-flex;align-items:center;gap:9px;border:1px solid color-mix(in srgb,var(--sec) 45%,transparent);color:#fff;background:color-mix(in srgb,var(--sec) 12%,transparent);letter-spacing:1px;font-size:10px}
+.ai-meter{display:inline-flex;gap:3px}
+.ai-meter i{width:6px;height:12px;border-radius:2px;background:rgba(255,255,255,.18)}
+.ai-meter i.on{background:var(--sec);box-shadow:0 0 8px var(--sec)}
+
+.ai-page .ai-cols{gap:26px}
+.ai-page .ai-col-title{display:flex;align-items:center;gap:8px;color:#fff;font-size:11px;letter-spacing:2px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.ai-page .ai-col-title svg{color:var(--sec)}
+.ai-page .ai-col-title small{margin-left:auto;font-size:10px;letter-spacing:0;padding:2px 9px;border-radius:20px;background:color-mix(in srgb,var(--sec) 16%,transparent);color:var(--sec);font-weight:700}
+.ai-page .ai-col-video .ai-col-title{color:#fff}
+.ai-page .ai-link{position:relative;gap:14px;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(8,12,24,.45);overflow:hidden}
+.ai-page .ai-link:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sec);opacity:0;transition:.22s}
+.ai-page .ai-link:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--sec) 60%,transparent);background:color-mix(in srgb,var(--sec) 9%,rgba(8,12,24,.6));box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.ai-page .ai-link:hover:before{opacity:1}
+.ai-page .ai-link-icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;font:700 17px 'Space Grotesk',sans-serif;color:#0b1020;background:linear-gradient(135deg,var(--sec),color-mix(in srgb,var(--sec) 55%,#fff))}
+.ai-page .ai-link-video .ai-link-icon{background:color-mix(in srgb,var(--sec) 16%,transparent);color:var(--sec);border:1px solid color-mix(in srgb,var(--sec) 40%,transparent)}
+.ai-page .ai-link-top b{font-size:15px}
+.ai-page .ai-link-top em{border-color:color-mix(in srgb,var(--sec) 40%,transparent);color:var(--sec)}
+.ai-page .ai-link-desc{font-size:12.3px;line-height:1.55}
+.ai-page .ai-link-video:hover{border-color:color-mix(in srgb,var(--sec) 60%,transparent);background:color-mix(in srgb,var(--sec) 9%,rgba(8,12,24,.6))}
+.ai-page .ai-link:hover .ai-link-arrow{color:var(--sec)}
+
+@media(max-width:860px){
+  .ai-toolbar{position:static}
+  .ai-search{min-width:0;width:100%}
+  .ai-page .ai-section{padding:22px 18px;border-radius:20px}
+  .ai-page .ai-section-head{flex-wrap:wrap}
+  .ai-page .ai-section-title h2{font-size:24px}
+  .ai-page .ai-stats b{font-size:32px}
+}
+@media(prefers-reduced-motion:reduce){.ai-page .ai-link,.ai-page .ai-stats>div{transition:none}}
+
+/* Professional flat override: one calm accent, no gradients, glows or multicolour */
+.ai-page .rg-bg{background:var(--bg)}
+.ai-page .rg-title{background:none;color:#fff}
+.ai-page .rg-eyebrow{border-color:rgba(122,162,214,.4);background:rgba(122,162,214,.08)}
+.ai-page .ai-stats>div,.ai-page .ai-section{background:rgba(255,255,255,.03);box-shadow:none;backdrop-filter:none}
+.ai-page .ai-stats>div:hover{transform:none;border-color:rgba(122,162,214,.5)}
+.ai-page .ai-stats>div:after,.ai-page .ai-section:after{display:none}
+.ai-page .ai-stats b{background:none;color:#fff}
+.ai-page .ai-section:before{height:2px;background:var(--sec)}
+.ai-toolbar{background:rgba(15,23,42,.9);box-shadow:none}
+.ai-page .ai-jump a.is-active{box-shadow:none}
+.ai-search:focus-within{border-color:#7aa2d6;box-shadow:none}
+.ai-meter i.on{box-shadow:none}
+.ai-page .ai-link{background:rgba(255,255,255,.03)}
+.ai-page .ai-link:hover,.ai-page .ai-link-video:hover{transform:none;box-shadow:none;background:rgba(122,162,214,.08)}
+.ai-page .ai-link-icon{background:color-mix(in srgb,var(--sec) 16%,transparent);color:var(--sec);border:1px solid color-mix(in srgb,var(--sec) 40%,transparent)}

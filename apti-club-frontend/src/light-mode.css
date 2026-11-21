@@ -1,0 +1,38 @@
+/* Light theme: cool neutral, navy accent. Loaded after styles.css. */
+:root[data-theme="light"]{color-scheme:light;--bg:#f5f6f8;--panel:#ffffff;--panel2:#eceef2;--text:#1b2433;--muted:#5f6b7c;--line:rgba(27,36,51,.13);--header:rgba(255,255,255,.88);--acid:#2f5f9e;--coral:#b4533a;--lilac:#5b4b9a}
+:root[data-theme="light"] .btn-acid,:root[data-theme="light"] .ticker,:root[data-theme="light"] .chat-launch{color:#fff}
+:root[data-theme="light"] .site-header{box-shadow:0 1px 0 var(--line)}
+
+/* Resources / guide pages */
+:root[data-theme="light"] .rg-bg{background:var(--bg)!important}
+:root[data-theme="light"] .rg-page{color:var(--text);--accent:#2f5f9e}
+:root[data-theme="light"] .rg-page::before{display:none}
+:root[data-theme="light"] .rg-back{color:var(--muted)}
+:root[data-theme="light"] .rg-back:hover,:root[data-theme="light"] .rg-title,:root[data-theme="light"] .rg-col-header h2,:root[data-theme="light"] .rli-name,:root[data-theme="light"] .flashcard-front h4,:root[data-theme="light"] .roadmap-summary-item strong{color:var(--text)}
+:root[data-theme="light"] .rg-intro,:root[data-theme="light"] .rg-goal,:root[data-theme="light"] .rg-tip p,:root[data-theme="light"] .rli-desc,:root[data-theme="light"] .flashcard-back p,:root[data-theme="light"] .roadmap-summary-item p{color:#3b4658}
+:root[data-theme="light"] .rg-col-sub,:root[data-theme="light"] .flashcard-hint,:root[data-theme="light"] .rli-icon{color:var(--muted)}
+:root[data-theme="light"] .rg-col-header,:root[data-theme="light"] .rg-col-links,:root[data-theme="light"] .rg-roadmap-section{border-color:var(--line)}
+:root[data-theme="light"] .resource-link-item,:root[data-theme="light"] .flashcard-front,:root[data-theme="light"] .roadmap-summary-item{background:#fff;border:1px solid var(--line)}
+:root[data-theme="light"] .roadmap-summary-number{background:var(--panel2)}
+:root[data-theme="light"] .guide-topic,:root[data-theme="light"] .guide-roadmap-item{background:#fff;border:1px solid var(--line);color:var(--text)}
+:root[data-theme="light"] .guide-tip{background:#e8eef7;color:var(--text)}
+:root[data-theme="light"] .guide-tip h3{color:var(--text)}
+
+/* AI Arena */
+:root[data-theme="light"] .ai-page .rg-title,:root[data-theme="light"] .ai-page .ai-stats b,:root[data-theme="light"] .ai-page .ai-col-title,:root[data-theme="light"] .ai-page .ai-link-top b,:root[data-theme="light"] .ai-page .ai-level,:root[data-theme="light"] .ai-search input{color:var(--text)}
+:root[data-theme="light"] .ai-page .ai-stats>div,:root[data-theme="light"] .ai-page .ai-section,:root[data-theme="light"] .ai-page .ai-link{background:#fff;border-color:var(--line)}
+:root[data-theme="light"] .ai-toolbar{background:rgba(255,255,255,.95);border-color:var(--line)}
+:root[data-theme="light"] .ai-search{background:#f5f6f8;border-color:var(--line)}
+:root[data-theme="light"] .ai-page .ai-jump a:hover{background:var(--panel2);color:var(--text)}
+:root[data-theme="light"] .ai-page .ai-jump a.is-active{color:var(--text);background:#e8eef7;border-color:#2f5f9e}
+:root[data-theme="light"] .ai-page .ai-col-title{border-color:var(--line)}
+:root[data-theme="light"] .ai-page .ai-section,:root[data-theme="light"] .ai-page .ai-link-icon,:root[data-theme="light"] .ai-page .ai-link-top em{--sec:#2f5f9e}
+:root[data-theme="light"] .ai-page .ai-link:hover,:root[data-theme="light"] .ai-page .ai-link-video:hover{background:#f0f4fa}
+:root[data-theme="light"] .ai-meter i{background:rgba(27,36,51,.15)}
+:root[data-theme="light"] .ai-page .rg-eyebrow{border-color:rgba(47,95,158,.35);background:rgba(47,95,158,.07)}
+
+/* Archive, events, companies */
+:root[data-theme="light"] .archive-page{background:var(--bg);color:var(--text)}
+:root[data-theme="light"] .archive-h1,:root[data-theme="light"] .archive-section-header h2,:root[data-theme="light"] .hb-title,:root[data-theme="light"] .event-title,:root[data-theme="light"] .cc-name{color:var(--text)}
+:root[data-theme="light"] .handbook-card,:root[data-theme="light"] .event-body,:root[data-theme="light"] .company-card{background:#fff;border-color:var(--line);box-shadow:0 1px 2px rgba(27,36,51,.05)}
+:root[data-theme="light"] .filter-btn--active,:root[data-theme="light"] .admin-tabs button.active,:root[data-theme="light"] .admin-submit,:root[data-theme="light"] .admin-login-box button{background:#2f5f9e;color:#fff}
