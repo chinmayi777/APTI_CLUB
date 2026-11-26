@@ -3,6 +3,7 @@ import {
   archiveUpload,
   createArchiveItem,
   getArchiveItems,
+  deleteArchiveItem,
   updateArchiveItem
 } from '../controllers/archiveController.js';
 import {
@@ -30,5 +31,6 @@ const handleUpload = (req, res, next) => {
 router.get('/', authenticateToken, getArchiveItems);
 router.post('/', authenticateToken, authorizeRoles('admin'), handleUpload, createArchiveItem);
 router.put('/:id', authenticateToken, authorizeRoles('admin'), handleUpload, updateArchiveItem);
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), deleteArchiveItem);
 
 export default router;

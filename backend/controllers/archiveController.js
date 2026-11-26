@@ -460,3 +460,46 @@ export const updateArchiveItem = async (req, res) => {
     });
   }
 };
+
+export const deleteArchiveItem = async (req, res) => {
+  try {
+    await ensureArchiveTable();
+
+    const [items] = await db.execute(
+      'SELECT file_url FROM archive_items WHERE id = ?',
+      [req.params.id]
+    );
+
+    if (!items.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'Archive item not found'
+      });
+    }
+
+    await db.execute('DELETE FROM archive_items WHERE id = ?', [req.params.id]);
+
+    // Only remove PDFs uploaded to this archive. Leave legacy files alone.
+    const match = items[0].file_url?.match(/^\/archive-files\/([a-f0-9-]+\.pdf)$/i);
+    if (match) {
+      try {
+        unlinkSync(path.join(uploadDirectory, match[1]));
+      } catch (error) {
+        if (error.code !== 'ENOENT') {
+          console.error('Archive file deletion error:', error);
+        }
+      }
+    }
+
+    return res.json({
+      success: true,
+      message: 'Archive item deleted successfully'
+    });
+  } catch (error) {
+    console.error('Archive deletion error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Could not delete the archive item'
+    });
+  }
+};
