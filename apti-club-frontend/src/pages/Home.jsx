@@ -400,6 +400,8 @@ const upcomingTomorrowEvents = events.filter(event => {
     ['Interview', 'Interview Prep', 'Walk in with clarity. Walk out with confidence.'],
     ['DSA', 'DSA Zone', 'Build the patterns behind great problem solvers.'],
     ['CS Fundamentals', 'Core Subjects', 'Own the fundamentals. Make every answer count.'],
+    ['Resume Building', 'Resume Building', 'Craft an ATS-friendly resume that gets you shortlisted.'],
+    ['AI', 'AI Arena', 'Learn it, use it, build with it. Step into the future of work.'],
   ]
 
   return (

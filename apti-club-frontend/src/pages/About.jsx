@@ -16,11 +16,48 @@ import {
   Target,
   Users
 } from 'lucide-react'
+import '../about-wings.css'
 
 const reveal = {
   hidden: { opacity: 0, y: 34 },
   visible: { opacity: 1, y: 0 }
 }
+
+const coreMembers = ['Aishwarya L', 'Chinmayi S', 'Rachana N']
+
+/* Sample names after the first two — replace with the real coordinators. */
+const coordinators = ['Divya K', 'Harshitha P', 'Keerthi M', 'Niprama M P', 'Poorvi J', 'Sahana R']
+
+const wings = [
+  {
+    key: 'aptitude',
+    title: 'Aptitude Wing',
+    tagline: 'Quant, logic and verbal ability',
+    icon: Brain,
+    members: ['Deekshitha', 'Logitha', 'Mamatha']
+  },
+  {
+    key: 'personality',
+    title: 'Personality Wing',
+    tagline: 'Communication, confidence and presence',
+    icon: Mic,
+    members: ['Bhoomika', 'Keerthana', 'Manya C']
+  },
+  {
+    key: 'technical',
+    title: 'Technical Wing',
+    tagline: 'DSA, core subjects and projects',
+    icon: Code,
+    members: ['Anusha', 'Deeksha', 'Jyothna', 'Kruthika', 'Sanagam Kumari']
+  },
+  {
+    key: 'interview',
+    title: 'Interview Wing',
+    tagline: 'HR, technical rounds and mock interviews',
+    icon: MessageCircle,
+    members: ['Gunashree']
+  }
+]
 
 const pillars = [
   {
@@ -324,11 +361,72 @@ export default function About() {
         <span className="eyebrow">06 / THE PEOPLE BEHIND THIS SPACE</span>
         <h2>Made by students.<br /><em>For every next step.</em></h2>
         <p>
-          The coordinators and curators of this website are final-year students
+          The core members and coordinators of this website are final-year students
           from the 2027 batch of Computer Science &amp; Engineering (CSE) and
           Information Science &amp; Engineering (ISE).
         </p>
         <div className="about-team-stamp"><span>APTI CLUB</span><b>2027</b><span>CSE + ISE</span></div>
+      </motion.section>
+
+      <motion.section
+        className="about-wings"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.12 }}
+        variants={reveal}
+        transition={{ duration: 0.65 }}
+      >
+        <div className="about-section-label">
+          <span className="eyebrow">07 / OUR WINGS</span>
+          <span className="about-label-line" />
+        </div>
+        <div className="about-wings-heading">
+          <h2>Four wings.<br /><em>One team.</em></h2>
+          <p>Led by our core members and coordinators, each wing runs its own sessions and events.</p>
+        </div>
+        <div className="about-wings-grid">
+          {wings.map((wing, index) => {
+            const Icon = wing.icon
+            return (
+              <motion.article
+                className={`about-wing about-wing--${wing.key}`}
+                key={wing.key}
+                initial={{ opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: (index % 2) * 0.1 }}
+              >
+                <header className="about-wing-head">
+                  <span className="about-wing-icon"><Icon size={22} /></span>
+                  <div>
+                    <h3>{wing.title}</h3>
+                    <p>{wing.tagline}</p>
+                  </div>
+                </header>
+
+                <div className="about-wing-row">
+                  <ul className="about-wing-names about-wing-names--lead">
+                    {wing.members.map(name => <li key={name}>{name}</li>)}
+                  </ul>
+                </div>
+              </motion.article>
+            )
+          })}
+        </div>
+        <div className="about-leadership">
+          <div className="about-wing-row">
+            <span className="about-wing-role">Core Members</span>
+            <ul className="about-wing-names about-wing-names--lead">
+              {coreMembers.map(name => <li key={name}>{name}</li>)}
+            </ul>
+          </div>
+          <div className="about-wing-row">
+            <span className="about-wing-role">Coordinators</span>
+            <ul className="about-wing-names">
+              {coordinators.map(name => <li key={name}>{name}</li>)}
+            </ul>
+          </div>
+        </div>
       </motion.section>
 
       <section className="about-bottom-cta">

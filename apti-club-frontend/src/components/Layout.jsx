@@ -4,6 +4,8 @@ import { Menu, X, Sun, Moon, ArrowUpRight, UserRound, LogOut } from 'lucide-reac
 import { useApp } from '../context'
 import Chatbot from './Chatbot'
 import logo from '../image.png'
+import logoLeft from '../assets/logo-gsss-left.png'
+import logoRight from '../assets/logo-gsss-right.png'
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -19,6 +21,12 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="nav-inner">
+        <div className="inst-brand" aria-label="GSSSIETW">
+          <img src={logoLeft} alt="GSSS emblem" />
+          <span>GSSSIETW</span>
+          <img src={logoRight} alt="GSSSIETW logo" />
+        </div>
+        <span className="inst-divider" aria-hidden="true" />
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <span className="brand-mark"><img src={logo} alt="image" /></span> APTI CLUB
         </Link>
